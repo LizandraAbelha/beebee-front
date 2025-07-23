@@ -41,4 +41,4 @@ Essa solução é pensada para a comunidade acadêmica, oferecendo:
 - Banco de dados configurado MySQL
 
 
-projeto reaalizado por: Bruna Catro e Lizandra Abelha
+projeto reaalizado por: Bruna Castro e Lizandra Abelha
