@@ -1,59 +1,62 @@
-# BeebeeAngular
+<img width="4000" height="469" alt="image" src="https://github.com/user-attachments/assets/1a0142f8-26c4-49e4-a620-cccdc3bf39a9" />
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 20.1.1.
+# Beebee  Sistema de Caronas para Estudantes do CEFET-MG Campus Timóteo
 
-## Development server
+## Sobre o Projeto
 
-To start a local development server, run:
+O sistema de caronas foi idealizado para **conectar estudantes do CEFET-MG Campus Timóteo** de maneira prática e segura, facilitando a organização de caronas entre alunos que compartilham trajetos similares. O app promove o uso consciente dos veículos, diminui custos e otimiza o tempo dos usuários.
 
-```bash
+Essa solução é pensada para a comunidade acadêmica, oferecendo:
+
+- **Redução de custos:** Motoristas e passageiros dividem despesas.
+- **Menos trânsito e poluição:** Menos carros na estrada.
+- **Praticidade:** Interface intuitiva e ágil.
+- **Segurança:** Controle exclusivo para estudantes do campus.
+
+## Funcionalidades
+
+- Cadastro e autenticação de usuários (alunos).
+- Criação, edição e exclusão de caronas.
+- Busca por caronas compatíveis por destino e horário.
+- Sistema de mensagens para combinar detalhes entre motorista e passageiro.
+- Visualização do histórico de caronas realizadas.
+
+## Tecnologias Utilizadas
+
+| Camada    | Tecnologia          
+
+| Backend   | Java 11, Spring Boot, Spring Security, JPA, Hibernate 
+| Frontend  | Angular 15, TypeScript, RxJS, Angular Material         
+| Banco     | PostgreSQL / MySQL (configurável)                      
+| Controle  | Git + GitHub    
+
+## 💻 Como Executar o Projeto
+
+### Pré-requisitos
+
+- Java JDK 11+
+- Maven
+- Node.js 16+
+- Angular CLI
+- Banco de dados configurado (PostgreSQL, MySQL ou outro)
+
+### Passos
+
+1. Clone os repositórios:
+
+git clone https://github.com/LizandraAbelha/beebee-angular.git
+
+Backend:
+https://github.com/BuruDAnette/beebee
+./mvnw clean install
+./mvnw spring-boot:run
+
+Frontend:
+cd beebee-front
+npm install
 ng serve
-```
 
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
+Acesse o frontend pelo navegador em:
+http://localhost:4200.
 
-## Code scaffolding
-
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
-
-```bash
-ng generate component component-name
-```
-
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
-
-```bash
-ng generate --help
-```
-
-## Building
-
-To build the project run:
-
-```bash
-ng build
-```
-
-This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
-
-## Running unit tests
-
-To execute unit tests with the [Karma](https://karma-runner.github.io) test runner, use the following command:
-
-```bash
-ng test
-```
-
-## Running end-to-end tests
-
-For end-to-end (e2e) testing, run:
-
-```bash
-ng e2e
-```
-
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
-
-## Additional Resources
-
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+projeto reaalizado por: Bruna Catro e Lizandra Abelha
