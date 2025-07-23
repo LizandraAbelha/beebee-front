@@ -1,0 +1,14 @@
+.bees-container {
+  display: inline-block;
+  font-size: 1.2rem;
+  color: #ffc107;
+}
+
+.bee {
+  color: #e0e0e0;
+  margin-right: 2px;
+}
+
+.bee.filled {
+  color: #ffc107;
+}

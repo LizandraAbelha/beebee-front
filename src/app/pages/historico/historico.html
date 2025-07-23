@@ -1,0 +1,129 @@
+<div class="container mt-4">
+  <h2 class="mb-4">Histórico de Viagens</h2>
+
+  @if (historicoPassageiro.length > 0) {
+    <h4>Como Passageiro</h4>
+    @for (item of historicoPassageiro; track item.id) {
+      <div class="card mb-3">
+        <div class="card-body">
+          <div class="d-flex justify-content-between align-items-start">
+            <div>
+              <h5 class="card-title">{{ item.viagem.origem }} → {{ item.viagem.destino }}</h5>
+              <p class="card-text mb-1">
+                Motorista: <strong>{{ item.viagem.motoristaNome }}</strong>
+              </p>
+              <p class="card-text mb-1">
+                Início: {{ item.viagem.dataInicio | date:'dd/MM/yyyy HH:mm' }}
+              </p>
+              @if (item.viagem.dataFim) {
+                <p class="card-text">
+                  Finalizada em: {{ item.viagem.dataFim | date:'dd/MM/yyyy HH:mm' }}
+                </p>
+              }
+            </div>
+            <div>
+              @if (item.situacao === 'FINALIZADA') {
+                @if (item.avaliacao && item.avaliacao.notaMotorista) {
+                  <div class="text-end">
+                    <small class="text-muted d-block">Sua Avaliação:</small>
+                    <app-bee-rating [rating]="item.avaliacao.notaMotorista"></app-bee-rating>
+                  </div>
+                } @else {
+                  <button (click)="abrirModalAvaliacao(item, 'motorista')"
+                          data-bs-toggle="modal" data-bs-target="#avaliacaoModal"
+                          class="btn btn-outline-primary btn-sm ms-3">Avaliar</button>
+                }
+              }
+            </div>
+          </div>
+          <span class="badge mt-2" [ngClass]="{
+            'bg-success': item.situacao === 'FINALIZADA',
+            'bg-danger': item.situacao === 'CANCELADA' || item.situacao === 'RECUSADA'
+          }">{{ item.situacao }}</span>
+        </div>
+      </div>
+    }
+  } @else {
+    <div class="alert alert-info">
+      <p class="mb-0">Você ainda não participou de nenhuma viagem.</p>
+    </div>
+  }
+
+  @if (isMotorista && historicoMotorista.length > 0) {
+    <h4 class="mt-5">Como Motorista</h4>
+    @for (viagem of historicoMotorista; track viagem.id) {
+      <div class="card mb-3">
+        <div class="card-body">
+          <h5 class="card-title">{{ viagem.origem }} → {{ viagem.destino }}</h5>
+          <p class="card-text mb-1">
+            Início: {{ viagem.dataInicio | date:'dd/MM/yyyy HH:mm' }}
+          </p>
+          @if (viagem.dataFim) {
+            <p class="card-text">
+              Finalizada em: {{ viagem.dataFim | date:'dd/MM/yyyy HH:mm' }}
+            </p>
+          }
+          <span class="badge" [ngClass]="{
+            'bg-success': viagem.situacao === 'FINALIZADA',
+            'bg-danger': viagem.situacao === 'CANCELADA'
+          }">{{ viagem.situacao }}</span>
+        </div>
+
+        @if (viagem.situacao === 'FINALIZADA' && viagem.passageiros && viagem.passageiros.length > 0) {
+          <div class="card-footer">
+            <h6 class="mb-2">Passageiros nesta viagem:</h6>
+            <ul class="list-group list-group-flush">
+              @for (passageiro of viagem.passageiros; track passageiro.id) {
+                <li class="list-group-item d-flex justify-content-between align-items-center">
+                  <span>{{ passageiro.alunoNome }}</span>
+                  @if (passageiro.avaliacao && passageiro.avaliacao.notaCaronista) {
+                    <app-bee-rating [rating]="passageiro.avaliacao.notaCaronista"></app-bee-rating>
+                  } @else {
+                    <button (click)="abrirModalAvaliacao(passageiro, 'passageiro')"
+                            data-bs-toggle="modal" data-bs-target="#avaliacaoModal"
+                            class="btn btn-sm btn-outline-primary">Avaliar</button>
+                  }
+                </li>
+              }
+            </ul>
+          </div>
+        }
+      </div>
+    }
+  }
+</div>
+
+<div class="modal fade" id="avaliacaoModal" #avaliacaoModal tabindex="-1" aria-labelledby="avaliacaoModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="avaliacaoModalLabel">
+          {{ roleAvaliacao === 'motorista' ? 'Avaliar Motorista' : 'Avaliar Passageiro' }}
+        </h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <form (ngSubmit)="salvarAvaliacao()" id="form-avaliacao">
+          <div class="mb-3">
+            <label for="nota" class="form-label">Nota (de 1 a 5)</label>
+            <input type="number" class="form-control" id="nota" name="nota"
+                  [ngModel]="roleAvaliacao === 'motorista' ? avaliacaoParaEnviar.notaMotorista : avaliacaoParaEnviar.notaCaronista"
+                  (ngModelChange)="$event && (roleAvaliacao === 'motorista' ? avaliacaoParaEnviar.notaMotorista = $event : avaliacaoParaEnviar.notaCaronista = $event)"
+                  min="1" max="5" required>
+          </div>
+          <div class="mb-3">
+            <label for="comentario" class="form-label">Comentário (Opcional)</label>
+            <textarea class="form-control" id="comentario" name="comentario"
+                      [ngModel]="roleAvaliacao === 'motorista' ? avaliacaoParaEnviar.comentarioMotorista : avaliacaoParaEnviar.comentarioCaronista"
+                      (ngModelChange)="$event && (roleAvaliacao === 'motorista' ? avaliacaoParaEnviar.comentarioMotorista = $event : avaliacaoParaEnviar.comentarioCaronista = $event)"
+                      rows="4" maxlength="500"></textarea>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+        <button type="submit" form="form-avaliacao" class="btn btn-primary">Enviar Avaliação</button>
+      </div>
+    </div>
+  </div>
+</div>

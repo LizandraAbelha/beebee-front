@@ -1,0 +1,28 @@
+<div class="login-container">
+  <div class="card login-card">
+    <div class="card-body">
+
+      <div class="text-center mb-4">
+        <img src="assets/images/B.svg" alt="Logo BeeBee" class="login-logo">
+      </div>
+
+      <h2 class="text-center">Login</h2>
+
+      <form (ngSubmit)="login()" class="mt-4">
+        <div class="mb-3">
+          <input type="text" class="form-control" id="login" name="login" [(ngModel)]="credenciais.login" required placeholder="Login">
+        </div>
+        <div class="mb-3">
+          <input type="password" class="form-control" id="senha" name="senha" [(ngModel)]="credenciais.senha" required placeholder="Senha">
+        </div>
+        <div class="d-grid mt-4">
+          <button type="submit" class="btn btn-primary btn-block">Acessar</button>
+        </div>
+      </form>
+
+      <div class="text-center mt-4 register-link">
+        Não possui uma conta? <a routerLink="/cadastro">Cadastre-se</a>
+      </div>
+    </div>
+  </div>
+</div>

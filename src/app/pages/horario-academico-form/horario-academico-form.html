@@ -1,0 +1,38 @@
+<div class="card mt-4">
+  <div class="card-header">
+    <h3>{{ isEditMode ? 'Editar Disciplina' : 'Nova Disciplina' }}</h3>
+  </div>
+  <div class="card-body">
+    <form (ngSubmit)="salvar()">
+      <div class="mb-3">
+        <label class="form-label">Descrição</label>
+        <input [(ngModel)]="horario.descricao" name="descricao" class="form-control" required />
+      </div>
+
+      <div class="mb-3">
+        <label class="form-label">Dia da Semana</label>
+        <select [(ngModel)]="horario.dia" name="dia" class="form-select" required>
+          <option value="SEGUNDA">Segunda-feira</option>
+          <option value="TERCA">Terça-feira</option>
+          <option value="QUARTA">Quarta-feira</option>
+          <option value="QUINTA">Quinta-feira</option>
+          <option value="SEXTA">Sexta-feira</option>
+          <option value="SABADO">Sábado</option>
+        </select>
+      </div>
+
+      <div class="mb-3">
+        <label class="form-label">Horário</label>
+        <input [(ngModel)]="horario.horario" name="horario" type="time" class="form-control" required />
+      </div>
+
+      <div class="mb-3">
+        <label class="form-label">Situação</label>
+        <input [(ngModel)]="horario.situacao" name="situacao" class="form-control" />
+      </div>
+
+      <button type="submit" class="btn btn-primary">{{ isEditMode ? 'Atualizar' : 'Salvar' }}</button>
+      <a routerLink="/app/horarios" class="btn btn-secondary ms-2">Cancelar</a>
+    </form>
+  </div>
+</div>

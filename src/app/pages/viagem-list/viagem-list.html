@@ -1,0 +1,62 @@
+<div class="d-flex justify-content-between align-items-center mb-4">
+  <h2>Caronas Disponíveis</h2>
+  @if (isMotorista) {
+    <a routerLink="/app/viagens/nova" class="btn btn-primary">Oferecer Carona</a>
+  }
+</div>
+
+<div class="card mb-4">
+  <div class="card-body">
+    <form (ngSubmit)="procurarViagens()">
+      <div class="row g-3 align-items-end">
+        <div class="col-md">
+          <label for="origem" class="form-label">Origem</label>
+          <input type="text" class="form-control" id="origem"
+                [(ngModel)]="filtroOrigem" name="filtroOrigem">
+        </div>
+        <div class="col-md">
+          <label for="destino" class="form-label">Destino</label>
+          <input type="text" class="form-control" id="destino"
+                [(ngModel)]="filtroDestino" name="filtroDestino">
+        </div>
+        <div class="col-md">
+          <label for="data" class="form-label">Data</label>
+          <input type="date" class="form-control" id="data"
+                [(ngModel)]="filtroData" name="filtroData">
+        </div>
+        <div class="col-md-auto">
+          <button type="submit" class="btn btn-success w-100">Procurar</button>
+        </div>
+        <div class="col-md-auto">
+          <button type="button" (click)="limparFiltros()" class="btn btn-outline-secondary w-100">Limpar</button>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>
+@if (viagens.length > 0) {
+  <div class="list-group">
+    @for (viagem of viagens; track viagem.id) {
+      <a [routerLink]="['/app/viagens', viagem.id]" class="list-group-item list-group-item-action">
+        <div class="d-flex w-100 justify-content-between">
+          <h5 class="mb-1">{{ viagem.origem }} → {{ viagem.destino }}</h5>
+          <small>Data: {{ viagem.dataInicio | date:'dd/MM/yyyy HH:mm' }}</small>
+        </div>
+        <p class="mb-1">{{ viagem.descricao }}</p>
+        <div class="d-flex w-100 justify-content-between align-items-center mt-2">
+            <small class="text-muted">Motorista: {{ viagem.motoristaNome }}</small>
+            <span class="badge" [ngClass]="{
+              'bg-primary': viagem.situacao === 'PLANEJADA',
+              'bg-info text-dark': viagem.situacao === 'EM_ANDAMENTO'
+            }">
+              {{ viagem.situacao }}
+            </span>
+        </div>
+      </a>
+    }
+  </div>
+} @else {
+  <div class="alert alert-info">
+    Nenhuma carona encontrada com os filtros selecionados.
+  </div>
+}

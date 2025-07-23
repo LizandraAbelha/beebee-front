@@ -1,0 +1,70 @@
+.horario-list-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 2rem 1rem;
+  min-height: 100vh;
+  pointer-events: auto;
+}
+
+.horario-list-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  max-width: 800px;
+  margin-bottom: 2rem;
+}
+
+.horario-list-header h2 {
+  font-family: 'Baloo 2', cursive;
+  font-size: 2.2rem;
+  color: #111111;
+  margin: 0;
+}
+
+.horario-list-header .btn-primary {
+  background-color: #FEBE01;
+  border-color: #FEBE01;
+  color: #111111;
+  font-weight: 600;
+  border-radius: 2rem;
+  padding: 0.75rem 1.5rem;
+  font-family: 'Baloo 2', cursive;
+  transition: all 0.2s ease-in-out;
+}
+
+.horario-list-header .btn-primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(254, 190, 1, 0.4);
+}
+
+.list-group {
+  width: 100%;
+  max-width: 800px;
+}
+
+.list-group-item {
+  border: none;
+  border-radius: 1rem;
+  margin-bottom: 1rem;
+  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.05);
+}
+
+.list-group-item h5 {
+  font-weight: bold;
+  margin-bottom: 0.25rem;
+}
+
+.list-group-item small {
+  font-size: 0.85rem;
+  color: #555;
+}
+
+.alert-info {
+  max-width: 800px;
+  text-align: center;
+  background-color: #e9ecef;
+  border-radius: 1rem;
+  padding: 1.5rem;
+}

@@ -1,0 +1,45 @@
+<div class="viagem-list-container">
+  <h2>Minhas Caronas</h2>
+  <hr>
+
+  @if (isMotorista) {
+    <h4>Viagens que estou a oferecer (Motorista)</h4>
+    @if (viagensComoMotorista.length > 0) {
+      <div class="list-group mb-4">
+        @for(viagem of viagensComoMotorista; track viagem.id) {
+          <a [routerLink]="['/app/viagens', viagem.id]" class="list-group-item list-group-item-action">
+            {{ viagem.origem }} → {{ viagem.destino }} em {{ viagem.dataInicio | date:'short' }}
+            <span class="badge float-end" [ngClass]="{'bg-success': viagem.situacao === 'FINALIZADA', 'bg-warning': viagem.situacao === 'PLANEJADA', 'bg-danger': viagem.situacao === 'CANCELADA', 'bg-info': viagem.situacao === 'EM_ANDAMENTO'}">{{ viagem.situacao }}</span>
+          </a>
+        }
+      </div>
+    } @else {
+      <div class="alert alert-info">
+        Você ainda não tem nenhuma viagem planejada como motorista.
+      </div>
+    }
+  }
+
+  <h4>Viagens que solicitei (Caronista)</h4>
+  @if (viagensComoPassageiro.length > 0) {
+    <ul class="list-group">
+      @for(solicitacao of viagensComoPassageiro; track solicitacao.id) {
+        <li class="list-group-item">
+          <div>
+            <strong>{{ solicitacao.viagem.origem }} → {{ solicitacao.viagem.destino }}</strong>
+            <span class="badge float-end" [ngClass]="{'bg-info': solicitacao.situacao === 'CONFIRMADA', 'bg-warning': solicitacao.situacao === 'SOLICITADA', 'bg-danger': solicitacao.situacao === 'CANCELADA', 'bg-success': solicitacao.situacao === 'FINALIZADA'}">
+              {{ solicitacao.situacao }}
+            </span>
+          </div>
+          <div class="text-muted small">
+            Motorista: {{ solicitacao.viagem.motoristaNome }} | Data: {{ solicitacao.viagem.dataInicio | date:'short' }}
+          </div>
+        </li>
+      }
+    </ul>
+  } @else {
+    <div class="alert alert-info">
+      Você ainda não solicitou participação em nenhuma viagem.
+    </div>
+  }
+</div>

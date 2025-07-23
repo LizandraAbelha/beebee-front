@@ -1,0 +1,31 @@
+<div class="veiculo-list-container">
+  <div class="header-section">
+    <h2>Meus Veículos</h2>
+    <a routerLink="/app/veiculos/form" class="btn btn-primary">Novo Veículo</a>
+  </div>
+
+  @if (veiculos.length > 0) {
+    <div class="veiculos-grid">
+      @for (veiculo of veiculos; track veiculo.id) {
+        <div class="veiculo-card">
+          <div class="card-icon">
+            <img src="assets/icons/smart car.png" alt="Ícone de Carro">
+          </div>
+          <div class="card-details">
+            <h5 class="vehicle-model">{{ veiculo.modelo }} - {{ veiculo.cor }}</h5>
+            <p class="vehicle-plate">Placa: <strong>{{ veiculo.placa }}</strong></p>
+          </div>
+          <div class="card-actions">
+            <a [routerLink]="['/app/veiculos/form', veiculo.id]" class="btn btn-secondary btn-sm">Editar</a>
+            <button (click)="excluir(veiculo.id)" class="btn btn-danger btn-sm ms-2">Excluir</button>
+          </div>
+        </div>
+      }
+    </div>
+  } @else {
+    <div class="alert alert-info empty-state">
+      <p class="mb-0">Você ainda não cadastrou nenhum veículo.</p>
+      <p class="mb-0">Cadastre seu primeiro veículo para começar a oferecer caronas!</p>
+    </div>
+  }
+</div>

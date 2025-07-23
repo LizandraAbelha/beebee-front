@@ -1,0 +1,93 @@
+<div class="container mt-4">
+  @if (aluno) {
+    <div class="card">
+      <div class="card-body">
+        <div class="profile-header mb-4">
+          <div class="profile-pic-container">
+
+            @if (aluno.fotoUrl) {
+              <img [src]="'http://localhost:8080' + aluno.fotoUrl" alt="Foto de Perfil" class="profile-pic">
+            } @else {
+              <div class="profile-pic-initials">
+                <span>{{ getIniciais(aluno.nome) }}</span>
+              </div>
+            }
+
+            <label for="file-upload" class="profile-pic-edit-label" title="Alterar foto">
+              📷
+            </label>
+            <input id="file-upload" type="file" (change)="onFileSelected($event)" style="display: none;">
+          </div>
+          <div class="profile-info">
+            <h5 class="card-title">{{ aluno.nome }}</h5>
+            <p class="card-text text-muted">{{ aluno.email }}</p>
+          </div>
+        </div>
+        <hr>
+
+        <div class="row mt-4">
+          <div class="col-md-6 reputation-section">
+            <h6>Reputação como Motorista</h6>
+            @if (aluno.mediaMotorista && aluno.mediaMotorista > 0) {
+              <div class="d-flex align-items-center justify-content-center">
+                <app-bee-rating [rating]="aluno.mediaMotorista"></app-bee-rating>
+                <span class="ms-2">({{ aluno.mediaMotorista | number:'1.1-2' }})</span>
+              </div>
+            } @else {
+              <p class="text-muted">Ainda não tem avaliações como motorista.</p>
+            }
+          </div>
+          <div class="col-md-6 reputation-section">
+            <h6>Reputação como Passageiro</h6>
+            @if (aluno.mediaCaronista && aluno.mediaCaronista > 0) {
+              <div class="d-flex align-items-center justify-content-center">
+                <app-bee-rating [rating]="aluno.mediaCaronista"></app-bee-rating>
+                <span class="ms-2">({{ aluno.mediaCaronista | number:'1.1-2' }})</span>
+              </div>
+            } @else {
+              <p class="text-muted">Ainda não tem avaliações como passageiro.</p>
+            }
+          </div>
+        </div>
+      </div>
+      <div class="card-footer text-end">
+        <button class="btn btn-outline-secondary" data-bs-toggle="modal" data-bs-target="#alterarSenhaModal">
+          Alterar Senha
+        </button>
+      </div>
+    </div>
+  } @else {
+    <p>A carregar dados do perfil...</p>
+  }
+</div>
+
+<div class="modal fade" id="alterarSenhaModal" #alterarSenhaModal tabindex="-1" aria-labelledby="alterarSenhaModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="alterarSenhaModalLabel">Alterar Senha</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <form (ngSubmit)="salvarNovaSenha()" id="form-alterar-senha">
+          <div class="mb-3">
+            <label for="senhaAtual" class="form-label">Senha Atual</label>
+            <input type="password" class="form-control" id="senhaAtual" name="senhaAtual" [(ngModel)]="senhaAtual" required>
+          </div>
+          <div class="mb-3">
+            <label for="novaSenha" class="form-label">Nova Senha</label>
+            <input type="password" class="form-control" id="novaSenha" name="novaSenha" [(ngModel)]="novaSenha" required minlength="6">
+          </div>
+          <div class="mb-3">
+            <label for="confirmarNovaSenha" class="form-label">Confirmar Nova Senha</label>
+            <input type="password" class="form-control" id="confirmarNovaSenha" name="confirmarNovaSenha" [(ngModel)]="confirmarNovaSenha" required>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+        <button type="submit" form="form-alterar-senha" class="btn btn-primary">Guardar Alterações</button>
+      </div>
+    </div>
+  </div>
+</div>

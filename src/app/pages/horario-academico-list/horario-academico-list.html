@@ -1,0 +1,24 @@
+<div class="d-flex justify-content-between align-items-center mb-4">
+  <h2>Meu Horário Acadêmico</h2>
+  <a routerLink="/app/horarios/form" class="btn btn-primary">Adicionar Disciplina</a>
+</div>
+
+<ul *ngIf="horarios.length > 0" class="list-group">
+ <li class="list-group-item d-flex justify-content-between align-items-center" *ngFor="let horario of horarios">
+  <div>
+    <h5>{{ horario.descricao }}</h5>
+    <p class="mb-1 text-muted">{{ horario.dia }} às {{ horario.horario }}</p>
+    <small>Status: {{ horario.situacao }}</small>
+  </div>
+  <div>
+    <a [routerLink]="['/app/horarios/form', horario.id]" class="btn btn-secondary btn-sm me-2">Editar</a>
+    <button *ngIf="horario.id" (click)="excluir(horario.id)" class="btn btn-danger btn-sm">Excluir</button>
+
+  </div>
+</li>
+
+</ul>
+
+<div *ngIf="horarios.length === 0" class="alert alert-info">
+  Você ainda não adicionou nenhuma disciplina.
+</div>

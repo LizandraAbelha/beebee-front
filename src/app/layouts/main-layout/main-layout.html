@@ -1,0 +1,46 @@
+<button (click)="toggleSidebar()" class="menu-toggle-btn">
+  <img src="assets/icons/Hive menu.png" alt="Menu">
+</button>
+
+<div class="sidebar-overlay" [class.active]="isSidebarOpen" (click)="closeSidebar()"></div>
+
+<aside class="sidebar" [class.open]="isSidebarOpen">
+  @if(aluno) {
+    <div class="sidebar-profile">
+      @if (aluno.fotoUrl) {
+        <img [src]="environment.backendUrl + aluno.fotoUrl" class="profile-pic" alt="Foto de Perfil">
+      } @else {
+        <div class="profile-pic-initials">
+          <span>{{ getIniciais() }}</span>
+        </div>
+      }
+      <h3>{{ aluno.nome }}</h3>
+    </div>
+  }
+
+  <nav class="sidebar-nav">
+    <a routerLink="/app/home" routerLinkActive="active" (click)="toggleSidebar()">Home</a>
+    @if (hasVehicles) {
+      <a routerLink="/app/veiculos" routerLinkActive="active" (click)="toggleSidebar()">Meus Veículos</a>
+    } @else {
+      <a routerLink="/app/veiculos/form" routerLinkActive="active" (click)="toggleSidebar()">Quero ser Motorista BeeBee!</a>
+    }
+    <a routerLink="/app/minhas-viagens" routerLinkActive="active" (click)="toggleSidebar()">Minhas Caronas</a>
+    <a routerLink="/app/historico" routerLinkActive="active" (click)="toggleSidebar()">Histórico</a>
+    <a routerLink="/app/meu-perfil" routerLinkActive="active" (click)="toggleSidebar()">Meu Perfil</a>
+    <a routerLink="/app/horarios" routerLinkActive="active" (click)="toggleSidebar()">Horário Acadêmico</a>
+    <a routerLink="/app/notificacoes" routerLinkActive="active" (click)="toggleSidebar()">Notificações
+      @if (notificacoes.length > 0) {
+        <span class="notification-badge">{{ notificacoes.length }}</span>
+      }
+    </a>
+  </nav>
+
+  <button (click)="logout()" class="btn-logout">Sair</button>
+</aside>
+
+<main>
+  <router-outlet></router-outlet>
+</main>
+
+<div id="global-map-background"></div>

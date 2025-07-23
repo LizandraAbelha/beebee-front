@@ -1,0 +1,86 @@
+<div class="home-container">
+  <div class="home-content-wrapper">
+    @if (viagemEmDestaque && motoristaDoDestaque) {
+      <div class="ride-status-card">
+        <div class="status-col-left">
+          @if (motoristaDoDestaque.fotoUrl) {
+            <img [src]="environment.backendUrl + motoristaDoDestaque.fotoUrl" class="driver-pic" alt="Foto do Motorista">
+          } @else {
+            <div class="driver-pic-initials">
+              <span>{{ getIniciais(viagemEmDestaque.viagem.motoristaNome) }}</span>
+            </div>
+          }
+          <strong class="driver-name">{{ viagemEmDestaque.viagem.motoristaNome }}</strong>
+          @if (veiculoDoDestaque) {
+            <span class="vehicle-model">{{ veiculoDoDestaque.modelo }}</span>
+            <span class="vehicle-plate">{{ veiculoDoDestaque.placa }}</span>
+          }
+        </div>
+
+        <div class="status-col-right">
+          <div class="trip-details">
+            <div class="trip-info-item">
+              <img src="assets/icons/Beehive.png" alt="Origem">
+              <span>{{ viagemEmDestaque.viagem.origem }}</span>
+            </div>
+            <div class="trip-info-item">
+              <img src="assets/icons/Beehive.png" alt="Destino">
+              <span>{{ viagemEmDestaque.viagem.destino }}</span>
+            </div>
+          </div>
+
+          <div class="departure-info">
+            Saída: <strong>{{ viagemEmDestaque.viagem.dataInicio | date:'dd/MM/yyyy' }}</strong> às <strong>{{ viagemEmDestaque.viagem.dataInicio | date:'HH:mm' }}</strong>
+          </div>
+
+          <div class="ride-actions">
+            @if (viagemEmDestaque.situacao === 'FINALIZADA') {
+              <a routerLink="/app/historico" class="btn btn-evaluate">Avaliar</a>
+            } @else if (viagemEmDestaque.situacao === 'SOLICITADA') {
+              <span class="status-text">Aguardando...</span>
+            } @else if (viagemEmDestaque.situacao === 'CONFIRMADA') {
+              <span class="status-text">Em Andamento</span>
+            } @else if (viagemEmDestaque.situacao === 'RECUSADA') {
+              <span class="status-text">Recusada</span>
+            } @else if (viagemEmDestaque.situacao === 'CANCELADA') {
+              <span class="status-text">Cancelada</span>
+            } @else {
+              <span class="status-text">Aguardando...</span>
+            }
+          </div>
+        </div>
+      </div>
+    }
+
+    <div class="search-card">
+      <div class="card-header">
+        <h4>Aonde você irá?</h4>
+        @if (possuiVeiculos) {
+          <a routerLink="/app/viagens/nova" class="publish-link">Publicar</a>
+        }
+      </div>
+      <div class="card-body">
+        <form (ngSubmit)="procurarViagens()">
+
+          <div class="form-group">
+            <img src="assets/icons/Beehive.png" class="input-icon" alt="Ícone de partida">
+            <input type="text" class="form-control" name="origem" [(ngModel)]="filtroOrigem" placeholder="Seu local de partida">
+          </div>
+
+          <div class="form-group">
+            <img src="assets/icons/Beehive.png" class="input-icon" alt="Ícone de destino">
+            <input type="text" class="form-control" name="destino" [(ngModel)]="filtroDestino" placeholder="Digite o destino">
+          </div>
+
+          <div class="form-group">
+            <input type="text" placeholder="dd/mm/aaaa" class="form-control" onfocus="(this.type='date')" onblur="(this.type='text')" name="data" [(ngModel)]="filtroData">
+          </div>
+
+          <div class="d-grid form-footer">
+              <button type="submit" class="btn btn-primary btn-block">Buscar Carona</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,29 @@
+<div class="veiculo-form-container">
+  <div class="card veiculo-card">
+    <div class="card-body">
+
+      <div class="form-header">
+        <h2>{{ isEditMode ? 'Editar Veículo' : 'Cadastrar Novo Veículo' }}</h2>
+      </div>
+
+      <form (ngSubmit)="salvarVeiculo()" class="mt-4">
+        <div class="mb-3">
+          <label for="placa" class="form-label visually-hidden">Placa</label>
+          <input type="text" class="form-control" id="placa" name="placa" [(ngModel)]="veiculo.placa" required placeholder="Placa do Veículo" [disabled]="isEditMode">
+        </div>
+        <div class="mb-3">
+          <label for="modelo" class="form-label visually-hidden">Modelo</label>
+          <input type="text" class="form-control" id="modelo" name="modelo" [(ngModel)]="veiculo.modelo" required placeholder="Modelo do Veículo">
+        </div>
+        <div class="mb-3">
+          <label for="cor" class="form-label visually-hidden">Cor</label>
+          <input type="text" class="form-control" id="cor" name="cor" [(ngModel)]="veiculo.cor" required placeholder="Cor do Veículo">
+        </div>
+        <div class="d-grid gap-2">
+          <button type="submit" class="btn btn-primary">{{ isEditMode ? 'Atualizar' : 'Salvar' }}</button>
+          <a routerLink="/app/home" class="btn btn-secondary">Cancelar</a>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

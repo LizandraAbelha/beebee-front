@@ -1,0 +1,5 @@
+<div class="bees-container">
+  @for (isFilled of bees; track $index) {
+    <span class="bee" [class.filled]="isFilled">&#9733;</span>
+  }
+</div>

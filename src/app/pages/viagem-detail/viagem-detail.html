@@ -1,0 +1,99 @@
+@if (viagem) {
+  <div class="card mt-4">
+    <div class="card-header">
+      <h3 class="mb-0">Detalhes da Viagem</h3>
+    </div>
+    <div class="card-body">
+      <h4>{{ viagem.origem }} → {{ viagem.destino }}</h4>
+      <p class="card-text">{{ viagem.descricao }}</p>
+      <ul class="list-group list-group-flush">
+        <li class="list-group-item"><strong>Data:</strong> {{ viagem.dataInicio | date:'fullDate' }} às {{ viagem.dataInicio | date:'shortTime' }}</li>
+        <li class="list-group-item">
+          <strong>Situação:</strong>
+          <span class="badge" [ngClass]="{
+            'bg-primary': viagem.situacao === 'PLANEJADA',
+            'bg-warning text-dark': viagem.situacao === 'EM_ANDAMENTO',
+            'bg-success': viagem.situacao === 'FINALIZADA',
+            'bg-danger': viagem.situacao === 'CANCELADA'
+          }">
+            {{ viagem.situacao }}
+          </span>
+        </li>
+        <li class="list-group-item d-flex align-items-center">
+          <strong>Motorista:</strong>
+          <span class="ms-2">{{ viagem.motoristaNome }}</span>
+          @if(viagem.mediaMotorista && viagem.mediaMotorista > 0) {
+            <div class="ms-3">
+              <app-bee-rating [rating]="viagem.mediaMotorista"></app-bee-rating>
+            </div>
+          }
+        </li>
+      </ul>
+    </div>
+
+    <div class="card-footer">
+      @if (isMotorista) {
+        <div class="mb-3">
+          <strong>Ações da Viagem:</strong>
+          @if(viagem.situacao === 'PLANEJADA') {
+            <button (click)="iniciarViagem()" class="btn btn-success btn-sm ms-2">Iniciar Viagem</button>
+            <button (click)="cancelarViagem()" class="btn btn-danger btn-sm ms-2">Cancelar Viagem</button>
+            
+            @if(pedidos.length === 0) {
+              <a [routerLink]="['/app/viagens/editar', viagem.id]" class="btn btn-outline-secondary btn-sm ms-2">Editar</a>
+            }
+          }
+          @if(viagem.situacao === 'EM_ANDAMENTO') {
+            <button (click)="encerrarViagem()" class="btn btn-primary btn-sm ms-2">Encerrar Viagem</button>
+          }
+        </div>
+        <hr>
+        <h5>Pedidos de Participação</h5>
+        @if(pedidos.length > 0) {
+          <ul class="list-group">
+            @for(pedido of pedidos; track pedido.id) {
+              <li class="list-group-item d-flex justify-content-between align-items-center">
+                <span>Caronista: <strong>{{ pedido.alunoNome }}</strong> - Status: <strong>{{ pedido.situacao }}</strong></span>
+                <div>
+                  @if(pedido.situacao === 'SOLICITADA') {
+                    <button (click)="gerirPedido(pedido, 'CONFIRMADA')" class="btn btn-sm btn-success">Aprovar</button>
+                    <button (click)="gerirPedido(pedido, 'RECUSADA')" class="btn btn-sm btn-danger ms-2">Recusar</button>
+                  }
+                  @if(pedido.situacao === 'CONFIRMADA' && viagem.situacao === 'EM_ANDAMENTO') {
+                    <button (click)="finalizarCaronaPassageiro(pedido)" class="btn btn-sm btn-info">Finalizar Carona</button>
+                  }
+                </div>
+              </li>
+            }
+          </ul>
+        } @else {
+          <p class="text-muted">Nenhum pedido de participação para esta viagem ainda.</p>
+        }
+      } @else {
+        <div class="d-flex justify-content-between align-items-center">
+          <div>
+            @if (minhaSolicitacao) {
+              <div class="alert mb-0" [ngClass]="{
+                'alert-warning': minhaSolicitacao.situacao === 'SOLICITADA',
+                'alert-success': minhaSolicitacao.situacao === 'CONFIRMADA',
+                'alert-info': minhaSolicitacao.situacao === 'FINALIZADA',
+                'alert-danger': minhaSolicitacao.situacao === 'CANCELADA' || minhaSolicitacao.situacao === 'RECUSADA'
+              }">
+                <p class="mb-0"><strong>Status da sua solicitação:</strong> {{ minhaSolicitacao.situacao }}</p>
+              </div>
+            } @else if (viagem.situacao === 'PLANEJADA') {
+              <button (click)="solicitarParticipacao()" class="btn btn-success">Solicitar Participação</button>
+            } @else {
+              <div class="alert alert-secondary mb-0">
+                <p class="mb-0">Esta viagem não está mais a aceitar novas solicitações.</p>
+              </div>
+            }
+          </div>
+          <a routerLink="/app/viagens" class="btn btn-secondary">Voltar para a Lista</a>
+        </div>
+      }
+    </div>
+  </div>
+} @else {
+  <p>A carregar detalhes da viagem...</p>
+}

@@ -1,0 +1,44 @@
+<div class="viagem-form-container">
+  <div class="card viagem-card">
+    <div class="card-body">
+      <div class="form-header">
+        <img src="assets/images/B.svg" alt="Logo BeeBee" class="logo-img">
+        <h2>{{ pageTitle }}</h2>
+      </div>
+
+      <form (ngSubmit)="salvarViagem()">
+        <div class="row">
+          <div class="col-md-6 mb-3">
+            <label for="origem" class="form-label">Origem</label>
+            <input type="text" class="form-control" id="origem" name="origem" [(ngModel)]="viagem.origem" required placeholder="Local de partida">
+          </div>
+          <div class="col-md-6 mb-3">
+            <label for="destino" class="form-label">Destino</label>
+            <input type="text" class="form-control" id="destino" name="destino" [(ngModel)]="viagem.destino" required placeholder="Local de destino">
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-md-6 mb-3">
+            <label for="dataInicio" class="form-label">Data e Hora de Início</label>
+            <input type="datetime-local" class="form-control" id="dataInicio" name="dataInicio" [(ngModel)]="viagem.dataInicio" required>
+          </div>
+          <div class="col-md-6 mb-3">
+            <label for="dataFim" class="form-label">Data e Hora de Fim (Opcional)</label>
+            <input type="datetime-local" class="form-control" id="dataFim" name="dataFim" [(ngModel)]="viagem.dataFim">
+          </div>
+        </div>
+
+        <div class="mb-3">
+          <label for="descricao" class="form-label">Descrição (Opcional)</label>
+          <textarea class="form-control" id="descricao" name="descricao" rows="3" [(ngModel)]="viagem.descricao" placeholder="Detalhes adicionais da viagem..."></textarea>
+        </div>
+
+        <div class="d-grid gap-2">
+          <button type="submit" class="btn btn-primary">Salvar Viagem</button>
+          <a routerLink="/app/minhas-viagens" class="btn btn-secondary">Cancelar</a>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
