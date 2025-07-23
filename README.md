@@ -38,25 +38,7 @@ Essa solução é pensada para a comunidade acadêmica, oferecendo:
 - Maven
 - Node.js 16+
 - Angular CLI
-- Banco de dados configurado (PostgreSQL, MySQL ou outro)
+- Banco de dados configurado MySQL
 
-### Passos
-
-1. Clone os repositórios:
-
-git clone https://github.com/LizandraAbelha/beebee-angular.git
-
-Backend:
-https://github.com/BuruDAnette/beebee
-./mvnw clean install
-./mvnw spring-boot:run
-
-Frontend:
-cd beebee-front
-npm install
-ng serve
-
-Acesse o frontend pelo navegador em:
-http://localhost:4200.
 
 projeto reaalizado por: Bruna Catro e Lizandra Abelha
