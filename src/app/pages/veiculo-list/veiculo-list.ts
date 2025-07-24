@@ -1,4 +1,3 @@
-// src/app/pages/veiculo-list/veiculo-list.ts
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { VeiculoService } from '../../services/veiculo';

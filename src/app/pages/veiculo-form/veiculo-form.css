@@ -3,9 +3,10 @@
   align-items: center;
   justify-content: center;
   padding: 1rem;
-  min-height: 90vh;
+  flex-grow: 1;
+  width: 100%;
+  box-sizing: border-box;
 }
-
 .veiculo-card {
   width: 100%;
   max-width: 450px;
@@ -21,63 +22,85 @@
   text-align: center;
   margin-bottom: 2rem;
 }
-
+.form-header img.logo-img {
+  max-width: 120px;
+  height: auto;
+  margin-bottom: 0.5rem;
+}
 .form-header h2 {
   font-family: 'Baloo 2', cursive;
-  font-size: 2.5rem;
-  font-weight: normal;
+  font-size: 2rem;
+  font-weight: regular;
   color: #111111;
-  margin-top: 0.5rem;
+  margin-top: 1rem;
 }
-
 .form-control {
+  padding: 0 1.5rem;
   border: 1px solid #D1D1D1;
   border-radius: 2rem;
-  padding: 0.75rem 1.85rem;
   height: 50px;
   font-size: 14px;
 }
-
 .form-control::placeholder {
   color: #A5A5A5;
   opacity: 1;
 }
-
 .form-control:focus {
   border-color: #FEBE01;
   box-shadow: 0 0 0 0.25rem rgba(254, 190, 1, 0.25);
 }
-
-.btn-primary, .btn-secondary {
-  font-size: 1.1rem;
-  padding: 0.75rem;
-  font-family: 'Baloo 2', cursive;
-  font-weight: 600;
-  border-radius: 2rem;
-  transition: all 0.2s ease-in-out;
-  width: 100%;
+.form-actions {
+  display: flex;
+  gap: 1rem;
+  margin-top: 2.5rem;
 }
 
+.btn {
+  flex: 1;
+  cursor: pointer;
+  text-decoration: none;
+  text-align: center;
+}
 .btn-primary {
   background-color: #FEBE01;
   border-color: #FEBE01;
   color: #000000;
+  font-weight: 600;
+  font-family: 'Baloo 2', cursive;
+  padding: 0.75rem;
+  border-radius: 2rem;
+  transition: all 0.2s ease-in-out;
 }
-
-.btn-primary:hover {
+.btn-primary:hover:not(:disabled) {
   transform: translateY(-2px);
   box-shadow: 0 4px 12px rgba(254, 190, 1, 0.4);
 }
-
+.btn-primary:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
+}
 .btn-secondary {
   background-color: #DD1129;
   border-color: #DD1129;
   color: #ffffff;
+  font-weight: 600;
+  font-family: 'Baloo 2', cursive;
+  padding: 0.75rem;
+  border-radius: 2rem;
+  transition: all 0.2s ease-in-out;
 }
-
 .btn-secondary:hover {
-  background-color: #c82333;
-  border-color: #bd2130;
   transform: translateY(-2px);
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+.text-danger {
+  text-align: center;
+  display: block;
+}
+.form-field + .text-danger {
+    margin-top: -0.75rem;
+    margin-bottom: 1rem;
 }

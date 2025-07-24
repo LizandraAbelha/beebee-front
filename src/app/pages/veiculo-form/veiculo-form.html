@@ -3,26 +3,34 @@
     <div class="card-body">
 
       <div class="form-header">
+        <img src="assets/images/logo (1).png" alt="Logo BeeBee" class="logo-img">
         <h2>{{ isEditMode ? 'Editar Veículo' : 'Cadastrar Novo Veículo' }}</h2>
       </div>
 
-      <form (ngSubmit)="salvarVeiculo()" class="mt-4">
+      <form (ngSubmit)="salvarVeiculo()" #veiculoForm="ngForm" class="mt-4" novalidate>
         <div class="mb-3">
           <label for="placa" class="form-label visually-hidden">Placa</label>
-          <input type="text" class="form-control" id="placa" name="placa" [(ngModel)]="veiculo.placa" required placeholder="Placa do Veículo" [disabled]="isEditMode">
+          <input type="text" class="form-control" id="placa" name="placa" [(ngModel)]="veiculo.placa" required placeholder="Placa do Veículo" [disabled]="isEditMode" #placa="ngModel">
+          <div *ngIf="placa.invalid && (placa.dirty || placa.touched)" class="text-danger mt-1">
+            <small>A placa é obrigatória *</small>
+          </div>
         </div>
         <div class="mb-3">
           <label for="modelo" class="form-label visually-hidden">Modelo</label>
-          <input type="text" class="form-control" id="modelo" name="modelo" [(ngModel)]="veiculo.modelo" required placeholder="Modelo do Veículo">
+          <input type="text" class="form-control" id="modelo" name="modelo" [(ngModel)]="veiculo.modelo" required placeholder="Modelo do Veículo" #modelo="ngModel">
+           <div *ngIf="modelo.invalid && (modelo.dirty || modelo.touched)" class="text-danger mt-1">
+            <small>O modelo é obrigatório *</small>
+          </div>
         </div>
         <div class="mb-3">
           <label for="cor" class="form-label visually-hidden">Cor</label>
           <input type="text" class="form-control" id="cor" name="cor" [(ngModel)]="veiculo.cor" required placeholder="Cor do Veículo">
         </div>
-        <div class="d-grid gap-2">
-          <button type="submit" class="btn btn-primary">{{ isEditMode ? 'Atualizar' : 'Salvar' }}</button>
-          <a routerLink="/app/home" class="btn btn-secondary">Cancelar</a>
+        <div class="form-actions">
+          <button type="submit" class="btn btn-primary" [disabled]="veiculoForm.invalid">{{ isEditMode ? 'Atualizar' : 'Salvar' }}</button>
+          <button type="button" (click)="cancelar()" class="btn btn-secondary">Cancelar</button>
         </div>
+
       </form>
     </div>
   </div>

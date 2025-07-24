@@ -1,97 +1,393 @@
-.viagem-form-container {
-  display: flex;
-  justify-content: center;
-  padding: 2rem 1rem;
-  min-height: 100vh;
-  background-color: #f9f9f9;
-  pointer-events: auto;
+html, body {
+  background-color: #f8f9fa;
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  width: 100%;
+  overflow-x: hidden;
+  font-family: 'Poppins', sans-serif;
 }
 
-.viagem-card {
-  width: 100%;
-  max-width: 700px;
-  border-radius: 1rem;
-  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
-  background-color: #ffffff;
-  padding: 2rem;
+.main-container {
+  min-height: 100vh;
+  padding: 2rem 0;
   box-sizing: border-box;
 }
 
-.form-header {
-  display: flex;
-  align-items: center;
-  gap: 1rem;
+.viagem-detail-wrapper {
+  max-width: 900px;
+  width: calc(100% - 2rem);
+  margin: 0 auto;
+  box-sizing: border-box;
+  padding: 0;
+  pointer-events: auto;
+}
+
+.viagem-detail-wrapper .card {
+  border: none;
+  border-radius: 1rem;
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+  margin-top: 0 !important;
   margin-bottom: 2rem;
+  overflow: hidden;
 }
 
-.logo-img {
-  width: 50px;
-  height: 50px;
+.viagem-detail-wrapper .card-header {
+  background-color: #ffffff;
+  border-bottom: 1px solid #eee;
+  padding: 1.5rem;
+  text-align: center;
 }
 
-.form-header h2 {
+.viagem-detail-wrapper .card-body {
+  padding: 1.5rem;
+}
+
+.viagem-detail-wrapper .card-footer {
+  background-color: #f8f9fa;
+  border-top: 1px solid #eee;
+  padding: 1.5rem;
+}
+
+.header-title-group h3 {
   font-family: 'Baloo 2', cursive;
-  font-size: 2rem;
+  font-size: 2.5rem;
+  font-weight: normal;
   color: #111111;
   margin: 0;
 }
 
-.form-label {
-  font-weight: 600;
-  color: #333333;
-}
-
-.form-control {
-  border-radius: 1rem;
-  border: 1px solid #ddd;
-  padding: 0.5rem 1rem;
-  font-size: 1rem;
-  transition: border-color 0.3s ease;
-}
-
-.form-control:focus {
-  border-color: #FEBE01;
-  outline: none;
-  box-shadow: 0 0 6px rgba(254, 190, 1, 0.5);
-}
-
-textarea.form-control {
-  resize: vertical;
-  border-radius: 1rem;
-  min-height: 100px;
-}
-
-.btn-primary {
-  background-color: #FEBE01;
-  border: none;
-  color: #111111;
-  font-weight: 700;
+.viagem-detail-wrapper h4 {
   font-family: 'Baloo 2', cursive;
-  border-radius: 2rem;
-  padding: 0.75rem 0;
-  font-size: 1.1rem;
-  transition: background-color 0.3s ease;
+  font-size: 1.8rem;
+  color: #222;
+  margin-bottom: 1rem;
+  text-align: center;
 }
 
-.btn-primary:hover {
-  background-color: #e6b300;
+.viagem-detail-wrapper h5 {
+  font-family: 'Baloo 2', cursive;
+  font-size: 1.5rem;
+  color: #333;
+  margin-top: 1.5rem;
+  margin-bottom: 1rem;
+  text-align: center;
+}
+
+.viagem-detail-wrapper .card-text {
+    font-size: 1rem;
+    margin-bottom: 1.5rem;
+    text-align: center;
+}
+
+.viagem-detail-wrapper .list-group-item {
+  border-color: #eee;
+  padding: 1rem 1.5rem;
+  background-color: transparent;
+  font-size: 1rem;
+  color: #333;
+}
+
+.vehicle-section-header {
+  padding-top: 1.5rem !important;
+  border-top: 1px solid #eee;
+  font-family: 'Baloo 2', cursive;
+  font-size: 1.2rem;
+  color: #333;
+}
+
+.viagem-detail-wrapper .action-buttons {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  flex-shrink: 0;
+}
+
+.viagem-detail-wrapper .list-group-item strong {
+  color: #555;
+}
+
+.viagem-detail-wrapper .badge {
+  font-family: 'Poppins', sans-serif;
+  font-weight: 600;
+  padding: 0.4em 0.8em;
+  border-radius: 1rem;
+  font-size: 0.85em;
+  vertical-align: middle;
+  margin-left: 0.5rem;
+  text-transform: uppercase;
+}
+.viagem-detail-wrapper .badge.bg-primary {
+  background-color: #FEBE01 !important;
+  color: #111111 !important;
+}
+.viagem-detail-wrapper .badge.bg-warning {
+  background-color: #fff3cd !important;
+  color: #856404 !important;
+}
+.viagem-detail-wrapper .badge.bg-success {
+  background-color: #d4edda !important;
+  color: #155724 !important;
+}
+.viagem-detail-wrapper .badge.bg-danger {
+  background-color: #f8d7da !important;
+  color: #721c24 !important;
+}
+.viagem-detail-wrapper .badge.bg-info {
+  background-color: #d1ecf1 !important;
+  color: #0c5460 !important;
+}
+
+.viagem-detail-wrapper .alert {
+  padding: 1rem;
+  margin-bottom: 1rem;
+  border: 1px solid transparent;
+  border-radius: 0.5rem;
+  font-size: 0.95rem;
+}
+.viagem-detail-wrapper .alert.alert-warning {
+    background-color: #fff3cd;
+    color: #856404;
+    border-color: #ffeeba;
+}
+.viagem-detail-wrapper .alert.alert-success {
+    background-color: #d4edda;
+    color: #155724;
+    border-color: #c3e6cb;
+}
+.viagem-detail-wrapper .alert.alert-info {
+    color: #000000;
+    background-color: rgba(254, 190, 1, 0.4);
+    border-color:rgba(254, 190, 1, 0.4);
+}
+.viagem-detail-wrapper .alert.alert-danger {
+    background-color: #f8d7da;
+    color: #721c24;
+    border-color: #f5c6cb;
+}
+.viagem-detail-wrapper .alert.alert-secondary {
+    background-color: #e2e3e5;
+    color: #383d41;
+    border-color: #d6d8db;
+}
+
+.viagem-detail-wrapper .btn {
+  font-family: 'Poppins', sans-serif;
+  font-weight: 600;
+  border-radius: 2rem;
+  padding: 0.6rem 1.2rem;
+  font-size: 0.95rem;
+  transition: all 0.2s ease;
+  cursor: pointer;
+}
+
+.viagem-detail-wrapper .btn-primary,
+.viagem-detail-wrapper .btn-success,
+.viagem-detail-wrapper .btn-info {
+  background-color: #FEBE01;
+  border-color: #FEBE01;
+  color: #111111;
+}
+.viagem-detail-wrapper .btn-primary:hover,
+.viagem-detail-wrapper .btn-success:hover,
+.viagem-detail-wrapper .btn-info:hover {
+  background-color: #FEBE01;
+  border-color: #FEBE01;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 10px rgba(254, 190, 1, 0.3);
+}
+
+.viagem-detail-wrapper .btn-danger {
+  background-color: #dc3545;
+  border-color: #dc3545;
+  color: #ffffff;
+  font-weight: 500;
+  padding: 0.5rem 1rem;
+  border-radius: 2rem;
+}
+.viagem-detail-wrapper .btn-danger:hover {
+  background-color: #dc3545;
+  border-color: #dc3545;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(220, 53, 69, 0.4);
+}
+.viagem-detail-actions {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 1rem;
+  margin-top: 1.5rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid #eee;
+}
+.viagem-detail-actions .btn {
+  font-family: 'Poppins', sans-serif;
+  font-weight: 600;
+  border-radius: 2rem;
+  padding: 0.6rem 1.2rem;
+  font-size: 0.95rem;
+  transition: all 0.2s ease;
+  cursor: pointer;
+  border: 2px solid transparent;
+}
+.viagem-detail-actions .btn-cancelar {
+  background-color: #dc3545;
+  border-color: #dc3545;
+  color: #ffffff;
+  padding-left: 2rem;
+  padding-right: 2rem;
+}
+.viagem-detail-actions .btn-cancelar:hover {
+  background-color: #dc3545;
+  border-color: #dc3545;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(220, 53, 69, 0.4);
+}
+.viagem-detail-actions .btn-editar {
+  background-color: #f0f0f0;
+  color: #333;
+  border-radius: 2rem;
+  padding: 0.5rem 1rem;
+  font-weight: 500;
+  text-decoration: none;
+  font-size: 0.9rem;
+  display: inline-block;
+  transition: background-color 0.2s ease;
+}
+.viagem-detail-actions .btn-editar:hover {
+  background-color: #5a6268;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 10px rgba(108, 117, 125, 0.3);
+  color: #ffffff;
 }
 
 .btn-secondary {
-  border-radius: 2rem;
-  padding: 0.75rem 0;
-  font-size: 1.1rem;
+  background-color: #6c757d;
+  border-color: #6c757d;
+  color: #ffffff;
+}
+.btn-secondary:hover {
+  background-color: #5a6268;
+  border-color: #545b62;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 10px rgba(108, 117, 125, 0.3);
 }
 
-.d-grid.gap-2 {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 1rem;
-  margin-top: 1.5rem;
-}
-
-@media (max-width: 576px) {
-  .d-grid.gap-2 {
-    grid-template-columns: 1fr;
+@media (max-width: 768px) {
+  .viagem-detail-wrapper {
+    width: calc(100% - 1.5rem);
   }
+  .viagem-detail-wrapper .card-header,
+  .viagem-detail-wrapper .card-body,
+  .viagem-detail-wrapper .card-footer {
+    padding: 1rem;
+  }
+  .header-title-group h3 {
+    font-size: 1.8rem;
+  }
+  .viagem-detail-wrapper h4 {
+    font-size: 1.5rem;
+  }
+  .viagem-detail-wrapper h5 {
+    font-size: 1.3rem;
+  }
+  .viagem-detail-wrapper .list-group-item {
+    font-size: 0.95rem;
+  }
+  .viagem-detail-wrapper .btn {
+    padding: 0.5rem 1rem;
+    font-size: 0.9rem;
+  }
+  .viagem-detail-wrapper .d-flex.justify-content-between.align-items-center {
+    flex-direction: column;
+    align-items: flex-start !important;
+  }
+  .viagem-detail-wrapper .d-flex.justify-content-between.align-items-center > div,
+  .viagem-detail-wrapper .d-flex.justify-content-between.align-items-center > a {
+    width: 100%;
+    margin-bottom: 0.5rem;
+    margin-left: 0 !important;
+  }
+  .viagem-detail-wrapper .d-flex.justify-content-between.align-items-center > a.btn {
+    text-align: center;
+    display: block;
+  }
+}
+
+.modal-content {
+  border-radius: 1rem;
+  border: none;
+}
+.modal-header {
+  border-bottom: 1px solid #f0f0f0;
+}
+.modal-title {
+  font-family: 'Baloo 2', cursive;
+  font-weight: 700;
+}
+.modal-footer {
+  border-top: 1px solid #f0f0f0;
+}
+
+.modal-body .form-field {
+  position: relative;
+  margin-bottom: 1.5rem;
+}
+.modal-body .form-icon {
+  position: absolute;
+  left: 1.25rem;
+  top: 22px;
+  transform: translateY(-50%);
+  width: 20px;
+  height: 20px;
+  opacity: 0.6;
+}
+.modal-body .form-control {
+  border: 1px solid #D1D1D1;
+  border-radius: 1.25rem;
+  padding: 0.75rem 1.5rem 0.75rem 3.5rem;
+  font-size: 14px;
+  width: 100%;
+  box-sizing: border-box;
+}
+.modal-body .form-control::placeholder {
+  color: #A5A5A5;
+  opacity: 1;
+}
+.modal-body .form-control:focus {
+  border-color: #FEBE01;
+  box-shadow: 0 0 0 0.25rem rgba(254, 190, 1, 0.25);
+}
+.modal-body textarea.form-control {
+  height: 120px;
+  resize: vertical;
+}
+
+.btn-cancel {
+  background-color: #DD1129;
+  border-color: #DD1129;
+  color: #ffffff;
+  font-weight: 600;
+  font-family: 'Baloo 2', cursive;
+  padding: 0.75rem;
+  border-radius: 2rem;
+  transition: all 0.2s ease-in-out;
+}
+.btn-secondary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+.btn-primary {
+  background-color: #FEBE01;
+  border-color: #FEBE01;
+  color: #000000;
+  font-weight: 600;
+  font-family: 'Baloo 2', cursive;
+  padding: 0.75rem;
+  border-radius: 2rem;
+  transition: all 0.2s ease-in-out;
+}
+.btn-primary:hover:not(:disabled) {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(254, 190, 1, 0.4);
 }
