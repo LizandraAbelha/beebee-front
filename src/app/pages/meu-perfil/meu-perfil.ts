@@ -12,6 +12,7 @@ import { forkJoin, of } from 'rxjs';
 import { catchError, map, switchMap } from 'rxjs/operators';
 import { ViagemAluno } from '../../models/viagem-aluno';
 import { Viagem } from '../../models/viagem';
+import { environment } from '../../../environments/environment';
 
 interface AvaliacaoDisplay {
   nomeAvaliador: string;
@@ -41,6 +42,8 @@ export class MeuPerfil implements OnInit {
 
   avaliacoesComoMotorista: AvaliacaoDisplay[] = [];
   avaliacoesComoPassageiro: AvaliacaoDisplay[] = [];
+
+  public environment = environment;
 
   constructor(
     private alunoService: AlunoService,

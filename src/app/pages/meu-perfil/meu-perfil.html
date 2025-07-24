@@ -11,8 +11,7 @@
         <div class="profile-header">
           <div class="profile-pic-container">
             @if (aluno.fotoUrl) {
-              <img [src]="'http://localhost:8080' + aluno.fotoUrl" alt="Foto de Perfil" class="profile-pic">
-            } @else {
+              <img [src]="environment.backendUrl + aluno.fotoUrl" alt="Foto de Perfil" class="profile-pic">            } @else {
               <div class="profile-pic-initials">
                 <span>{{ getIniciais(aluno.nome) }}</span>
               </div>
