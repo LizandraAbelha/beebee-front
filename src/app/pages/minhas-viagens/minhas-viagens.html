@@ -1,45 +1,75 @@
-<div class="viagem-list-container">
-  <h2>Minhas Caronas</h2>
-  <hr>
+<div class="main-container">
+  <div class="viagem-list-container">
+    <div class="header-section">
+      <h2>Minhas Caronas</h2>
+    </div>
+    <hr>
 
-  @if (isMotorista) {
-    <h4>Viagens que estou a oferecer (Motorista)</h4>
-    @if (viagensComoMotorista.length > 0) {
-      <div class="list-group mb-4">
-        @for(viagem of viagensComoMotorista; track viagem.id) {
-          <a [routerLink]="['/app/viagens', viagem.id]" class="list-group-item list-group-item-action">
-            {{ viagem.origem }} → {{ viagem.destino }} em {{ viagem.dataInicio | date:'short' }}
-            <span class="badge float-end" [ngClass]="{'bg-success': viagem.situacao === 'FINALIZADA', 'bg-warning': viagem.situacao === 'PLANEJADA', 'bg-danger': viagem.situacao === 'CANCELADA', 'bg-info': viagem.situacao === 'EM_ANDAMENTO'}">{{ viagem.situacao }}</span>
-          </a>
+    @if (isMotorista) {
+      <div class="header-title-group">
+        <img src="assets/icons/Bee.png" alt="Ícone de Motorista">
+        <h4>Minhas viagens como Motorista</h4>
+      </div>
+      @if (viagensComoMotorista.length > 0) {
+        <div class="viagem-cards-container">
+          @for(viagem of viagensComoMotorista; track viagem.id) {
+            <a [routerLink]="['/app/viagens', viagem.id]" class="viagem-card">
+              <div class="viagem-card-icon-motorista">
+                <img src="assets/icons/smart car.png" alt="Ícone de Carro">
+              </div>
+              <div class="viagem-card-details">
+                <div class="viagem-card-route">
+                  {{ viagem.origem }} → {{ viagem.destino }}
+                </div>
+                <div class="viagem-card-info">
+                  <span>{{ viagem.dataInicio | date:'shortDate' }}</span>
+                  <span class="viagem-card-time">{{ viagem.dataInicio | date:'shortTime' }}</span>
+                </div>
+              </div>
+              <div class="viagem-card-status {{ viagem.situacao | lowercase }}">
+                {{ viagem.situacao }}
+              </div>
+            </a>
+          }
+        </div>
+      } @else {
+        <div class="alert alert-info">
+          Você ainda não tem nenhuma viagem planejada como motorista.
+        </div>
+      }
+    }
+
+    <div class="header-title-group2">
+      <img src="assets/icons/Bumblebee.png" alt="Ícone de Caronista">
+      <h4 class="mt-4">Minhas viagens como Caronista</h4>
+    </div>
+    @if (viagensComoPassageiro.length > 0) {
+      <div class="viagem-cards-container">
+        @for(solicitacao of viagensComoPassageiro; track solicitacao.id) {
+          <div class="viagem-card">
+            <div class="viagem-card-icon-motorista">
+              <img src="assets/icons/smart car.png" alt="Ícone de Carro">
+            </div>
+            <div class="viagem-card-details">
+              <div class="viagem-card-route">
+                <strong>{{ solicitacao.viagem.origem }} → {{ solicitacao.viagem.destino }}</strong>
+              </div>
+              <div class="viagem-card-info">
+                Motorista: {{ solicitacao.viagem.motoristaNome }} |
+                <span>{{ solicitacao.viagem.dataInicio | date:'shortDate' }}</span>
+                <span class="viagem-card-time">{{ solicitacao.viagem.dataInicio | date:'shortTime' }}</span>
+              </div>
+            </div>
+            <div class="viagem-card-status {{ solicitacao.situacao | lowercase }}">
+              {{ solicitacao.situacao }}
+            </div>
+          </div>
         }
       </div>
     } @else {
       <div class="alert alert-info">
-        Você ainda não tem nenhuma viagem planejada como motorista.
+        Você ainda não solicitou participação em nenhuma viagem.
       </div>
     }
-  }
-
-  <h4>Viagens que solicitei (Caronista)</h4>
-  @if (viagensComoPassageiro.length > 0) {
-    <ul class="list-group">
-      @for(solicitacao of viagensComoPassageiro; track solicitacao.id) {
-        <li class="list-group-item">
-          <div>
-            <strong>{{ solicitacao.viagem.origem }} → {{ solicitacao.viagem.destino }}</strong>
-            <span class="badge float-end" [ngClass]="{'bg-info': solicitacao.situacao === 'CONFIRMADA', 'bg-warning': solicitacao.situacao === 'SOLICITADA', 'bg-danger': solicitacao.situacao === 'CANCELADA', 'bg-success': solicitacao.situacao === 'FINALIZADA'}">
-              {{ solicitacao.situacao }}
-            </span>
-          </div>
-          <div class="text-muted small">
-            Motorista: {{ solicitacao.viagem.motoristaNome }} | Data: {{ solicitacao.viagem.dataInicio | date:'short' }}
-          </div>
-        </li>
-      }
-    </ul>
-  } @else {
-    <div class="alert alert-info">
-      Você ainda não solicitou participação em nenhuma viagem.
-    </div>
-  }
+  </div>
 </div>

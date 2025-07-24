@@ -1,10 +1,15 @@
-<div class="container mt-4">
+<div class="profile-page-container">
   @if (aluno) {
-    <div class="card">
+    <div class="profile-card">
       <div class="card-body">
-        <div class="profile-header mb-4">
-          <div class="profile-pic-container">
 
+        <h2 class="profile-title">
+          <img src="assets/icons/Bee Top View.png" alt="Ícone de Perfil">
+          Meu Perfil
+        </h2>
+
+        <div class="profile-header">
+          <div class="profile-pic-container">
             @if (aluno.fotoUrl) {
               <img [src]="'http://localhost:8080' + aluno.fotoUrl" alt="Foto de Perfil" class="profile-pic">
             } @else {
@@ -12,56 +17,121 @@
                 <span>{{ getIniciais(aluno.nome) }}</span>
               </div>
             }
-
             <label for="file-upload" class="profile-pic-edit-label" title="Alterar foto">
-              📷
+              <img src="assets/icons/Group 11232.png" alt="Alterar foto">
             </label>
             <input id="file-upload" type="file" (change)="onFileSelected($event)" style="display: none;">
           </div>
-          <div class="profile-info">
-            <h5 class="card-title">{{ aluno.nome }}</h5>
-            <p class="card-text text-muted">{{ aluno.email }}</p>
-          </div>
+          <h5 class="profile-name">{{ aluno.nome }}</h5>
+          <p class="profile-email">{{ aluno.email }}</p>
         </div>
+
+        @if (!isEditMode) {
+          <div class="info-display-section">
+            <div class="info-field">
+              <img src="assets/icons/Customer.png" alt="Ícone de Usuário" class="info-icon">
+              <span class="info-text">{{ aluno.nome }}</span>
+            </div>
+            <div class="info-field">
+              <img src="assets/icons/Mail.png" alt="Ícone de Email" class="info-icon">
+              <span class="info-text">{{ aluno.email }}</span>
+            </div>
+            <div class="card-footer">
+                <button class="btn btn-outline-secondary" (click)="toggleEditMode()">Editar Perfil</button>
+                <button class="btn btn-outline-secondary" data-bs-toggle="modal" data-bs-target="#alterarSenhaModal">
+                    Alterar Senha
+                </button>
+            </div>
+          </div>
+
+        } @else {
+          <form (ngSubmit)="salvarAlteracoes()" class="edit-form-section">
+            <div class="form-field mb-3">
+              <img src="assets/icons/Customer.png" alt="Ícone de Usuário" class="form-icon">
+              <input type="text" class="form-control" id="nome" name="nome" [(ngModel)]="alunoEdit.nome">
+            </div>
+            <div class="form-field mb-3">
+              <img src="assets/icons/Mail.png" alt="Ícone de Email" class="form-icon">
+              <input type="email" class="form-control" id="email" name="email" [(ngModel)]="alunoEdit.email">
+            </div>
+            <div class="form-actions-edit">
+              <button type="submit" class="btn btn-primary">
+                {{ isEditMode ? 'Atualizar' : 'Salvar' }}
+              </button>
+              <button type="button" (click)="cancelarEdicao()" class="btn btn-cancel">Cancelar</button>
+            </div>
+          </form>
+        }
+
         <hr>
 
-        <div class="row mt-4">
-          <div class="col-md-6 reputation-section">
-            <h6>Reputação como Motorista</h6>
+        <div class="reviews-container">
+          @if (avaliacoesComoMotorista.length > 0) {
+            <div class="reviews-section">
+              <h6 class="reviews-title">Avaliações como Motorista</h6>
+              <div class="reviews-list">
+                @for (avaliacao of avaliacoesComoMotorista; track $index) {
+                  <div class="review-card">
+                    <div class="review-header">
+                      <span class="reviewer-name">{{ avaliacao.nomeAvaliador }}</span>
+                      <app-bee-rating [rating]="avaliacao.nota"></app-bee-rating>
+                    </div>
+                    <p class="review-comment">"{{ avaliacao.comentario }}"</p>
+                  </div>
+                }
+              </div>
+            </div>
+          }
+
+          @if (avaliacoesComoPassageiro.length > 0) {
+            <div class="reviews-section">
+              <h6 class="reviews-title">Avaliações como Passageiro</h6>
+              <div class="reviews-list">
+                @for (avaliacao of avaliacoesComoPassageiro; track $index) {
+                  <div class="review-card">
+                    <div class="review-header">
+                      <span class="reviewer-name">{{ avaliacao.nomeAvaliador }}</span>
+                      <app-bee-rating [rating]="avaliacao.nota"></app-bee-rating>
+                    </div>
+                    <p class="review-comment">"{{ avaliacao.comentario }}"</p>
+                  </div>
+                }
+              </div>
+            </div>
+          }
+        </div>
+
+        <div class="reputation-container">
+          <div class="reputation-section">
+            <h6>Como Motorista</h6>
             @if (aluno.mediaMotorista && aluno.mediaMotorista > 0) {
-              <div class="d-flex align-items-center justify-content-center">
+              <div class="rating-display">
                 <app-bee-rating [rating]="aluno.mediaMotorista"></app-bee-rating>
-                <span class="ms-2">({{ aluno.mediaMotorista | number:'1.1-2' }})</span>
               </div>
             } @else {
-              <p class="text-muted">Ainda não tem avaliações como motorista.</p>
+              <p class="text-muted">Ainda não tem avaliações.</p>
             }
           </div>
-          <div class="col-md-6 reputation-section">
-            <h6>Reputação como Passageiro</h6>
+          <div class="reputation-section">
+            <h6>Como Passageiro</h6>
             @if (aluno.mediaCaronista && aluno.mediaCaronista > 0) {
-              <div class="d-flex align-items-center justify-content-center">
+              <div class="rating-display">
                 <app-bee-rating [rating]="aluno.mediaCaronista"></app-bee-rating>
-                <span class="ms-2">({{ aluno.mediaCaronista | number:'1.1-2' }})</span>
               </div>
             } @else {
-              <p class="text-muted">Ainda não tem avaliações como passageiro.</p>
+              <p class="text-muted">Ainda não tem avaliações.</p>
             }
           </div>
         </div>
       </div>
-      <div class="card-footer text-end">
-        <button class="btn btn-outline-secondary" data-bs-toggle="modal" data-bs-target="#alterarSenhaModal">
-          Alterar Senha
-        </button>
-      </div>
+
     </div>
   } @else {
     <p>A carregar dados do perfil...</p>
   }
 </div>
 
-<div class="modal fade" id="alterarSenhaModal" #alterarSenhaModal tabindex="-1" aria-labelledby="alterarSenhaModalLabel" aria-hidden="true">
+<div class="modal fade" #alterarSenhaModal id="alterarSenhaModal" tabindex="-1" aria-labelledby="alterarSenhaModalLabel" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered">
     <div class="modal-content">
       <div class="modal-header">
@@ -70,23 +140,23 @@
       </div>
       <div class="modal-body">
         <form (ngSubmit)="salvarNovaSenha()" id="form-alterar-senha">
-          <div class="mb-3">
-            <label for="senhaAtual" class="form-label">Senha Atual</label>
-            <input type="password" class="form-control" id="senhaAtual" name="senhaAtual" [(ngModel)]="senhaAtual" required>
+          <div class="form-field">
+            <img src="assets/icons/Lock.png" alt="Ícone de Senha" class="form-icon">
+            <input type="password" class="form-control" id="senhaAtual" name="senhaAtual" [(ngModel)]="senhaAtual" placeholder="Senha Atual">
           </div>
-          <div class="mb-3">
-            <label for="novaSenha" class="form-label">Nova Senha</label>
-            <input type="password" class="form-control" id="novaSenha" name="novaSenha" [(ngModel)]="novaSenha" required minlength="6">
+          <div class="form-field">
+            <img src="assets/icons/Lock.png" alt="Ícone de Senha" class="form-icon">
+            <input type="password" class="form-control" id="novaSenha" name="novaSenha" [(ngModel)]="novaSenha" placeholder="Nova Senha">
           </div>
-          <div class="mb-3">
-            <label for="confirmarNovaSenha" class="form-label">Confirmar Nova Senha</label>
-            <input type="password" class="form-control" id="confirmarNovaSenha" name="confirmarNovaSenha" [(ngModel)]="confirmarNovaSenha" required>
+          <div class="form-field">
+            <img src="assets/icons/Lock.png" alt="Ícone de Senha" class="form-icon">
+            <input type="password" class="form-control" id="confirmarNovaSenha" name="confirmarNovaSenha" [(ngModel)]="confirmarNovaSenha" placeholder="Confirmar Nova Senha">
           </div>
         </form>
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-        <button type="submit" form="form-alterar-senha" class="btn btn-primary">Guardar Alterações</button>
+        <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancelar</button>
+        <button type="submit" form="form-alterar-senha" class="btn btn-primary">Salvar Senha</button>
       </div>
     </div>
   </div>

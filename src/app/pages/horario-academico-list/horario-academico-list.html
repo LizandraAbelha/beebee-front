@@ -1,24 +1,31 @@
-<div class="d-flex justify-content-between align-items-center mb-4">
-  <h2>Meu Horário Acadêmico</h2>
-  <a routerLink="/app/horarios/form" class="btn btn-primary">Adicionar Disciplina</a>
-</div>
+<div class="horario-list-container">
+  <div class="horario-list-card">
+    <div class="horario-list-header">
+      <div class="header-title-group">
+        <h2>Meu Horário Acadêmico</h2>
+      </div>
+    </div>
 
-<ul *ngIf="horarios.length > 0" class="list-group">
- <li class="list-group-item d-flex justify-content-between align-items-center" *ngFor="let horario of horarios">
-  <div>
-    <h5>{{ horario.descricao }}</h5>
-    <p class="mb-1 text-muted">{{ horario.dia }} às {{ horario.horario }}</p>
-    <small>Status: {{ horario.situacao }}</small>
+    <div class="add-horario-button-container">
+      <a routerLink="/app/horarios/form" class="btn btn-primary">Adicionar Disciplina</a>
+    </div>
+
+    <ul *ngIf="horarios.length > 0" class="list-group">
+      <li class="list-group-item" *ngFor="let horario of horarios">
+        <div class="horario-info">
+          <h5>{{ horario.descricao }}</h5>
+          <p class="mb-1 text-muted">{{ horario.dia }} às {{ horario.horario }}</p>
+          <small>Status: <span class="badge" [ngClass]="{'bg-success': horario.situacao === 'Ativa', 'bg-danger': horario.situacao !== 'Ativa'}">{{ horario.situacao }}</span></small>
+        </div>
+        <div class="horario-actions">
+          <a [routerLink]="['/app/horarios/form', horario.id]" class="btn btn-editar btn-sm me-2">Editar</a>
+          <button *ngIf="horario.id" (click)="excluir(horario.id)" class="btn btn-excluir btn-sm">Excluir</button>
+        </div>
+      </li>
+    </ul>
+    <div *ngIf="horarios.length === 0" class="alert alert-info empty-state">
+        <p class="mb-0">Você ainda não adicionou nenhuma disciplina.</p>
+        <p>Clique em "Adicionar Disciplina" para começar!</p>
+    </div>
   </div>
-  <div>
-    <a [routerLink]="['/app/horarios/form', horario.id]" class="btn btn-secondary btn-sm me-2">Editar</a>
-    <button *ngIf="horario.id" (click)="excluir(horario.id)" class="btn btn-danger btn-sm">Excluir</button>
-
-  </div>
-</li>
-
-</ul>
-
-<div *ngIf="horarios.length === 0" class="alert alert-info">
-  Você ainda não adicionou nenhuma disciplina.
 </div>

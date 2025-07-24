@@ -1,70 +1,163 @@
+html, body {
+  background-color: #ffffff;
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  width: 100%;
+  overflow-x: hidden;
+  font-family: 'Poppins', sans-serif;
+}
+
+.horario-info {
+  flex-grow: 1;
+  margin-bottom: 1rem;
+}
 .horario-list-container {
   display: flex;
-  flex-direction: column;
   align-items: center;
-  padding: 2rem 1rem;
+  justify-content: center;
   min-height: 100vh;
+  width: 100%;
+  box-sizing: border-box;
+  padding: 2rem 1rem;
+  background-color: #ffffff;
+}
+.horario-list-card {
+  max-width: 900px;
+  width: 100%;
+  margin: 0 auto;
+  padding: 2rem 1.5rem;
+  background: #ffffff;
+  border-radius: 1rem;
+  box-shadow: 0 8px 25px rgba(0,0,0,0.07);
   pointer-events: auto;
 }
-
 .horario-list-header {
   display: flex;
-  justify-content: space-between;
+  justify-content: center;
   align-items: center;
-  width: 100%;
-  max-width: 800px;
-  margin-bottom: 2rem;
+  margin-bottom: 1.5rem;
+  text-align: center;
 }
-
-.horario-list-header h2 {
+.header-title-group h2 {
   font-family: 'Baloo 2', cursive;
-  font-size: 2.2rem;
+  font-size: 2rem;
+  font-weight: regular;
   color: #111111;
-  margin: 0;
+  margin-top: 1rem;
+}
+.horario-info h5 {
+  font-weight: 700;
+  color: #585858;
+  margin-bottom: 0.25rem;
+}
+.horario-info .text-muted {
+  color: #585858 !important;
+  font-size: 0.9rem;
+}
+.horario-info .badge {
+  font-size: 0.75rem;
+  font-weight: 600;
+  padding: 0.4em 0.8em;
+  border-radius: 50px;
+}
+.horario-info .bg-success {
+  background-color:rgb(247, 231, 183) !important;
+  color: #FEBE01 !important;
+}
+.horario-info .bg-danger {
+  background-color: #fee2e2 !important;
+  color: #DD1129 !important;
+}
+.horario-actions {
+  display: flex;
+  gap: 0.5rem;
 }
 
-.horario-list-header .btn-primary {
+.add-horario-button-container {
+  text-align: right;
+  margin-bottom: 1.5rem;
+}
+
+.btn-primary {
   background-color: #FEBE01;
   border-color: #FEBE01;
   color: #111111;
   font-weight: 600;
-  border-radius: 2rem;
-  padding: 0.75rem 1.5rem;
   font-family: 'Baloo 2', cursive;
+  padding: 0.75rem 1.5rem;
+  border-radius: 2rem;
   transition: all 0.2s ease-in-out;
+  text-decoration: none;
 }
-
-.horario-list-header .btn-primary:hover {
+.btn-primary:hover {
   transform: translateY(-2px);
   box-shadow: 0 4px 12px rgba(254, 190, 1, 0.4);
 }
-
-.list-group {
-  width: 100%;
-  max-width: 800px;
+.btn-editar, .btn-excluir {
+  border: none;
+  padding: 0.5rem 1rem;
+}
+.btn-editar {
+  background-color: #f0f0f0;
+  color: #333;
+  border-radius: 2rem;
+  padding: 0.5rem 1rem;
+  font-weight: 500;
+  text-decoration: none;
+  font-size: 0.9rem;
+  display: inline-block;
+  transition: background-color 0.2s ease;
+}
+.btn-editar:hover {
+  background-color: #585858;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 10px rgba(108, 117, 125, 0.3);
+  color: #ffffff;
+}
+.btn-excluir {
+  background-color: #DD1129;
+  border-color: #DD1129;
+  color: #ffffff;
+  font-weight: 600;
+  font-family: 'Baloo 2', cursive;
+  padding: 0.75rem;
+  border-radius: 2rem;
+  transition: all 0.2s ease-in-out;
+}
+.btn-excluir:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
 }
 
+.list-group {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
 .list-group-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: #ffffff;
   border: none;
   border-radius: 1rem;
   margin-bottom: 1rem;
-  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.05);
+  padding: 1.25rem 1.5rem;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.06);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  flex-wrap: wrap;
+}
+.list-group-item:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
 }
 
-.list-group-item h5 {
-  font-weight: bold;
-  margin-bottom: 0.25rem;
-}
-
-.list-group-item small {
-  font-size: 0.85rem;
-  color: #555;
-}
-
-.alert-info {
-  max-width: 800px;
+.alert.empty-state {
   text-align: center;
-  background-color: #e9ecef;
+  padding: 2rem;
   border-radius: 1rem;
-  padding: 1.5rem;
+  background-color: #f8f9fa;
+  color: #585858;
+  border: 1px dashed #ced4da;
 }
