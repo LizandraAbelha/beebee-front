@@ -1,4 +1,4 @@
-import { Component, OnInit, AfterViewInit } from '@angular/core';
+import { Component, OnInit, OnDestroy, AfterViewInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router, RouterLink } from '@angular/router';
 import { FormsModule } from '@angular/forms';
@@ -9,6 +9,9 @@ import { ViagemAlunoService } from '../../services/viagem-aluno';
 import { Aluno } from '../../models/aluno';
 import { AlunoService } from '../../services/aluno';
 import { Veiculo } from '../../models/veiculo';
+import { AvaliacaoService } from '../../services/avaliacao';
+import { forkJoin, of } from 'rxjs';
+import { catchError, map } from 'rxjs/operators';
 import maplibregl from 'maplibre-gl';
 
 @Component({
@@ -18,7 +21,7 @@ import maplibregl from 'maplibre-gl';
   templateUrl: './home.html',
   styleUrls: ['./home.css']
 })
-export class Home implements OnInit, AfterViewInit {
+export class Home implements OnInit, OnDestroy, AfterViewInit {
 
   possuiVeiculos: boolean = false;
   filtroOrigem: string = '';
@@ -30,19 +33,18 @@ export class Home implements OnInit, AfterViewInit {
   veiculoDoDestaque: Veiculo | null = null;
 
   public environment = environment;
-
   private map: maplibregl.Map | undefined;
 
   constructor(
     private veiculoService: VeiculoService,
     private router: Router,
     private viagemAlunoService: ViagemAlunoService,
-    private alunoService: AlunoService
+    private alunoService: AlunoService,
+    private avaliacaoService: AvaliacaoService
   ) {}
 
   ngOnInit(): void {
     const alunoId = localStorage.getItem('aluno_id');
-    console.log("1. Verificando Home. ID do aluno no localStorage:", alunoId);
     if (alunoId) {
       this.verificarViagensAtivas(Number(alunoId));
       this.veiculoService.getVeiculosPorMotorista(Number(alunoId)).subscribe(veiculos => {
@@ -52,76 +54,75 @@ export class Home implements OnInit, AfterViewInit {
   }
 
   verificarViagensAtivas(alunoId: number): void {
-    console.log("2. Buscando viagens para o aluno ID:", alunoId);
     this.viagemAlunoService.getByAlunoId(alunoId).subscribe(viagens => {
-      console.log("3. Viagens encontradas:", viagens);
-
       const viagemAtiva = viagens.find(v => ['EM_ANDAMENTO', 'CONFIRMADA', 'SOLICITADA'].includes(v.situacao));
 
       if (viagemAtiva) {
         this.viagemEmDestaque = viagemAtiva;
+        this.carregarDetalhesDestaque();
       } else {
-        const viagemParaAvaliar = viagens.find(v => v.situacao === 'FINALIZADA' && !v.avaliacao);
-        this.viagemEmDestaque = viagemParaAvaliar || null;
-      }
+        const viagensFinalizadas = viagens.filter(v => v.situacao === 'FINALIZADA');
 
-      console.log("4. Viagem em destaque selecionada:", this.viagemEmDestaque);
+        if (viagensFinalizadas.length === 0) {
+          this.viagemEmDestaque = null;
+          return;
+        }
 
-      if (this.viagemEmDestaque) {
-        const motoristaId = this.viagemEmDestaque.viagem.motoristaId;
-        console.log("5. Viagem encontrada! Buscando dados do motorista ID:", motoristaId);
+        const avaliacaoObservables = viagensFinalizadas.map(viagem =>
+          this.avaliacaoService.getByViagemAlunoId(viagem.id!).pipe(
+            catchError(() => of(undefined)),
+            map(avaliacao => ({ ...viagem, avaliacao: avaliacao }))
+          )
+        );
 
-        this.alunoService.getById(motoristaId).subscribe(motorista => {
-          this.motoristaDoDestaque = motorista;
-          console.log("6. Dados do motorista encontrados:", this.motoristaDoDestaque);
-        });
+        forkJoin(avaliacaoObservables).subscribe(viagensComAvaliacao => {
+          const viagemParaAvaliar = viagensComAvaliacao.find(v =>
+            !v.avaliacao || v.avaliacao.notaMotorista == null
+          );
 
-        this.veiculoService.getVeiculosPorMotorista(motoristaId).subscribe(veiculos => {
-          if (veiculos && veiculos.length > 0) {
-            this.veiculoDoDestaque = veiculos[0];
-            console.log("7. Veículo do motorista encontrado:", this.veiculoDoDestaque);
-          } else {
-            console.log("7. Nenhum veículo encontrado para o motorista.");
-          }
+          this.viagemEmDestaque = viagemParaAvaliar || null;
+          this.carregarDetalhesDestaque();
         });
       }
     });
   }
 
-  ngAfterViewInit(): void {
-    this.initializeMap();
+  carregarDetalhesDestaque(): void {
+    if (!this.viagemEmDestaque) {
+      this.motoristaDoDestaque = null;
+      this.veiculoDoDestaque = null;
+      return;
+    }
+
+    const motoristaId = this.viagemEmDestaque.viagem.motoristaId;
+    this.alunoService.getById(motoristaId).subscribe(motorista => {
+      this.motoristaDoDestaque = motorista;
+    });
+
+    this.veiculoService.getVeiculosPorMotorista(motoristaId).subscribe(veiculos => {
+      if (veiculos && veiculos.length > 0) {
+        this.veiculoDoDestaque = veiculos[0];
+      }
+    });
   }
 
-  initializeMap(): void {
-      const apiKey = environment.locationiqToken;
-
-      if (!apiKey || apiKey === 'COLE_SEU_TOKEN_AQUI') {
-        console.error('Token do LocationIQ não configurado em environment.ts');
-        return;
-      }
-
-      const styleUrl = `https://tiles.locationiq.com/v3/streets/vector.json?key=${apiKey}`;
-
-      if (this.map) {
-          this.map.remove();
-          this.map = undefined;
-      }
-
-      this.map = new maplibregl.Map({
-        container: 'global-map-background',
-        style: styleUrl,
-        center: [-42.65004, -19.53882],
-        zoom: 14,
-      });
-
-      this.map.addControl(new maplibregl.NavigationControl(), 'top-right');
-  }
-
+  ngAfterViewInit(): void { this.initializeMap(); }
   ngOnDestroy(): void {
     if (this.map) {
       this.map.remove();
       this.map = undefined;
     }
+  }
+
+  initializeMap(): void {
+    const apiKey = environment.locationiqToken;
+    if (!apiKey || apiKey === 'COLE_SEU_TOKEN_AQUI') return;
+    const styleUrl = `https://tiles.locationiq.com/v3/streets/vector.json?key=${apiKey}`;
+    if (this.map) this.map.remove();
+    this.map = new maplibregl.Map({
+      container: 'global-map-background', style: styleUrl, center: [-42.65004, -19.53882], zoom: 14
+    });
+    this.map.addControl(new maplibregl.NavigationControl(), 'top-right');
   }
 
   procurarViagens(): void {
@@ -135,19 +136,12 @@ export class Home implements OnInit, AfterViewInit {
   }
 
   getIniciais(nome: string | undefined): string {
-    if (!nome) {
-      return '';
-    }
+    if (!nome) return '';
     const nomes = nome.split(' ').filter(Boolean);
-    if (nomes.length === 0) {
-      return '';
-    }
-
+    if (nomes.length === 0) return '';
     const primeiraLetra = nomes[0][0] || '';
-    const ultimoNome = nomes[nomes.length - 1];
-    const ultimaLetra = ultimoNome[0] || '';
-
-    return nomes.length > 1 ? `${primeiraLetra}${ultimaLetra}`.toUpperCase() : primeiraLetra.toUpperCase();
+    const ultimoNome = nomes.length > 1 ? nomes[nomes.length - 1] : '';
+    const ultimaLetra = ultimoNome ? ultimoNome[0] : '';
+    return `${primeiraLetra}${ultimaLetra}`.toUpperCase();
   }
-
 }

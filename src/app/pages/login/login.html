@@ -8,15 +8,25 @@
 
       <h2 class="text-center">Login</h2>
 
-      <form (ngSubmit)="login()" class="mt-4">
-        <div class="mb-3">
-          <input type="text" class="form-control" id="login" name="login" [(ngModel)]="credenciais.login" required placeholder="Login">
+      <form (ngSubmit)="login()" #loginForm="ngForm" class="mt-4" novalidate>
+        <div class="form-field mb-3">
+          <img src="assets/icons/Bee Top View.png" alt="Ícone de Usuário" class="form-icon">
+          <input type="text" class="form-control" id="login" name="login" [(ngModel)]="credenciais.login" required placeholder="Login" #loginInput="ngModel">
         </div>
-        <div class="mb-3">
-          <input type="password" class="form-control" id="senha" name="senha" [(ngModel)]="credenciais.senha" required placeholder="Senha">
+        <div *ngIf="loginInput.invalid && (loginInput.dirty || loginInput.touched)" class="text-danger mb-3">
+            <small>O login é obrigatório *</small>
         </div>
+
+        <div class="form-field mb-3">
+          <img src="assets/icons/Mail.png" alt="Ícone de Senha" class="form-icon">
+          <input type="password" class="form-control" id="senha" name="senha" [(ngModel)]="credenciais.senha" required placeholder="Senha" #senha="ngModel">
+        </div>
+        <div *ngIf="senha.invalid && (senha.dirty || senha.touched)" class="text-danger mb-3">
+            <small>A senha é obrigatória *</small>
+        </div>
+
         <div class="d-grid mt-4">
-          <button type="submit" class="btn btn-primary btn-block">Acessar</button>
+          <button type="submit" class="btn btn-primary btn-block" [disabled]="loginForm.invalid">Acessar</button>
         </div>
       </form>
 

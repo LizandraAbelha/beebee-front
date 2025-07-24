@@ -5,7 +5,6 @@
   min-height: 100vh;
   padding: 1rem;
 }
-
 .login-card {
   width: 100%;
   max-width: 450px;
@@ -15,36 +14,44 @@
   overflow: hidden;
   padding: 1.5rem;
 }
-
-.login-logo {
-  max-width: 180px;
-  height: auto;
-}
-
-.login-card h2 {
+h2 {
   font-family: 'Baloo 2', cursive;
-  font-size: 2.5rem;
+  font-size: 2rem;
   font-weight: regular;
   color: #111111;
   margin-top: 1rem;
 }
+.login-logo {
+  max-width: 250px;
+  height: auto;
+}
 
+.form-field {
+  position: relative;
+}
+.form-icon {
+  position: absolute;
+  left: 1.25rem;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 20px;
+  height: 20px;
+  opacity: 0.6;
+}
 .form-control {
   border: 1px solid #D1D1D1;
   border-radius: 2rem;
-  padding: 0.75rem 1.85rem;
+  padding: 0.75rem 1.85rem 0.75rem 3.5rem;
   height: 50px;
   font-size: 14px;
 }
-
 .form-control::placeholder {
   color: #A5A5A5;
   opacity: 1;
 }
-
 .form-control:focus {
   border-color: #FEBE01;
-  box-shadow: 0 0 0 0.25rem rgba(254, 190, 1, 0.25); 
+  box-shadow: 0 0 0 0.25rem rgba(254, 190, 1, 0.25);
 }
 
 .btn-primary {
@@ -57,7 +64,6 @@
   border-radius: 2rem;
   transition: all 0.2s ease-in-out;
 }
-
 .btn-primary:hover {
   transform: translateY(-2px);
   box-shadow: 0 4px 12px rgba(254, 190, 1, 0.4);
@@ -67,9 +73,17 @@
   color: #2C302E;
   font-size: 0.9rem;
 }
-
 .register-link a {
   color: #FEBE01;
   text-decoration: none;
   font-weight: bold;
+}
+
+.text-danger {
+  text-align: center;
+  display: block;
+}
+.form-field + .text-danger {
+    margin-top: -0.75rem;
+    margin-bottom: 1rem;
 }

@@ -8,24 +8,49 @@
 
       <h2 class="text-center">Cadastro</h2>
 
-      <form (ngSubmit)="cadastrar()" class="mt-4">
-        <div class="mb-3">
-          <input type="text" class="form-control" id="nome" name="nome" [(ngModel)]="aluno.nome" required placeholder="Nome Completo">
+      <form (ngSubmit)="cadastrar()" #cadastroForm="ngForm" class="mt-4" novalidate>
+        <div class="form-field mb-3">
+          <img src="assets/icons/Customer.png" alt="Ícone de Nome" class="form-icon">
+          <input type="text" class="form-control" id="nome" name="nome" [(ngModel)]="aluno.nome" required placeholder="Nome Completo" #nome="ngModel">
         </div>
-        <div class="mb-3">
-          <input type="text" class="form-control" id="cpf" name="cpf" [(ngModel)]="aluno.cpf" required placeholder="CPF">
+        <div *ngIf="nome.invalid && (nome.dirty || nome.touched)" class="text-danger mb-3">
+            <small>O nome é obrigatório *</small>
         </div>
-        <div class="mb-3">
-          <input type="email" class="form-control" id="email" name="email" [(ngModel)]="aluno.email" required placeholder="Email">
+
+        <div class="form-field mb-3">
+          <img src="assets/icons/Customer.png" alt="Ícone de CPF" class="form-icon">
+          <input type="text" class="form-control" id="cpf" name="cpf" [(ngModel)]="aluno.cpf" required placeholder="CPF" #cpf="ngModel">
         </div>
-        <div class="mb-3">
-          <input type="text" class="form-control" id="login" name="login" [(ngModel)]="aluno.login" required placeholder="Login">
+        <div *ngIf="cpf.invalid && (cpf.dirty || cpf.touched)" class="text-danger mb-3">
+            <small>O CPF é obrigatório *</small>
         </div>
-        <div class="mb-3">
-          <input type="password" class="form-control" id="senha" name="senha" [(ngModel)]="aluno.senha" required placeholder="Senha">
+
+        <div class="form-field mb-3">
+          <img src="assets/icons/Mail.png" alt="Ícone de Email" class="form-icon">
+          <input type="email" class="form-control" id="email" name="email" [(ngModel)]="aluno.email" required placeholder="Email" #email="ngModel">
         </div>
+         <div *ngIf="email.invalid && (email.dirty || email.touched)" class="text-danger mb-3">
+            <small>O email é obrigatório *</small>
+        </div>
+
+        <div class="form-field mb-3">
+          <img src="assets/icons/Bee Top View.png" alt="Ícone de Login" class="form-icon">
+          <input type="text" class="form-control" id="login" name="login" [(ngModel)]="aluno.login" required placeholder="Login" #loginCadastro="ngModel">
+        </div>
+        <div *ngIf="loginCadastro.invalid && (loginCadastro.dirty || loginCadastro.touched)" class="text-danger mb-3">
+            <small>O login é obrigatório *</small>
+        </div>
+
+        <div class="form-field mb-3">
+          <img src="assets/icons/Lock.png" alt="Ícone de Senha" class="form-icon">
+          <input type="password" class="form-control" id="senha" name="senha" [(ngModel)]="aluno.senha" required placeholder="Senha" #senhaCadastro="ngModel">
+        </div>
+        <div *ngIf="senhaCadastro.invalid && (senhaCadastro.dirty || senhaCadastro.touched)" class="text-danger mb-3">
+            <small>A senha é obrigatória *</small>
+        </div>
+
         <div class="d-grid mt-4">
-          <button type="submit" class="btn btn-primary btn-block">Cadastrar</button>
+          <button type="submit" class="btn btn-primary btn-block" [disabled]="cadastroForm.invalid">Cadastrar</button>
         </div>
       </form>
 
