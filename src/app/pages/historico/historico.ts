@@ -1,7 +1,6 @@
-import { Component, OnInit, ElementRef, ViewChild } from '@angular/core';
+import { Component, OnInit, ElementRef, ViewChild, AfterViewInit, OnDestroy } from '@angular/core';
 import { CommonModule, DatePipe } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { Router, RouterLink } from '@angular/router';
 import { ViagemAluno } from '../../models/viagem-aluno';
 import { Viagem } from '../../models/viagem';
 import { ViagemAlunoService } from '../../services/viagem-aluno';
@@ -23,14 +22,13 @@ interface ViagemComPassageiros extends Viagem {
   imports: [
     CommonModule,
     DatePipe,
-    RouterLink,
     FormsModule,
     BeeRating
   ],
   templateUrl: './historico.html',
   styleUrl: './historico.css'
 })
-export class Historico implements OnInit {
+export class Historico implements OnInit, AfterViewInit, OnDestroy {
   @ViewChild('avaliacaoModal') avaliacaoModal!: ElementRef;
 
   historicoMotorista: ViagemComPassageiros[] = [];
@@ -42,12 +40,13 @@ export class Historico implements OnInit {
   roleAvaliacao: 'motorista' | 'passageiro' | null = null;
   avaliacaoParaEnviar: Partial<Avaliacao> = {};
 
+  private modalInstance: any;
+
   constructor(
     private viagemService: ViagemService,
     private viagemAlunoService: ViagemAlunoService,
     private veiculoService: VeiculoService,
-    private avaliacaoService: AvaliacaoService,
-    private router: Router
+    private avaliacaoService: AvaliacaoService
   ) {}
 
   ngOnInit(): void {
@@ -55,6 +54,18 @@ export class Historico implements OnInit {
     if (this.alunoLogadoId) {
       this.verificarSeEhMotorista();
       this.carregarHistoricoPassageiro();
+    }
+  }
+
+  ngAfterViewInit(): void {
+    if (this.avaliacaoModal) {
+      this.modalInstance = new bootstrap.Modal(this.avaliacaoModal.nativeElement);
+    }
+  }
+
+  ngOnDestroy(): void {
+    if (this.modalInstance) {
+      this.modalInstance.dispose();
     }
   }
 
@@ -106,10 +117,11 @@ export class Historico implements OnInit {
     this.avaliacaoAtual = viagemAluno;
     this.roleAvaliacao = role;
     if (role === 'motorista') {
-      this.avaliacaoParaEnviar = { notaMotorista: 5, comentarioMotorista: '' };
+        this.avaliacaoParaEnviar = { notaMotorista: undefined, comentarioMotorista: '' };
     } else {
-      this.avaliacaoParaEnviar = { notaCaronista: 5, comentarioCaronista: '' };
+        this.avaliacaoParaEnviar = { notaCaronista: undefined, comentarioCaronista: '' };
     }
+    this.modalInstance?.show();
   }
 
   salvarAvaliacao(): void {
@@ -118,8 +130,7 @@ export class Historico implements OnInit {
     this.avaliacaoService.salvar(this.avaliacaoParaEnviar).subscribe({
       next: () => {
         alert('Avaliação enviada com sucesso!');
-        const modal = bootstrap.Modal.getInstance(this.avaliacaoModal.nativeElement);
-        modal.hide();
+        this.modalInstance?.hide();
         this.carregarHistoricoPassageiro();
         if (this.isMotorista) {
           this.carregarHistoricoMotorista();

@@ -1,17 +1,21 @@
-<div class="card mt-4">
-  <div class="card-header">
-    <h3>{{ isEditMode ? 'Editar Disciplina' : 'Nova Disciplina' }}</h3>
-  </div>
-  <div class="card-body">
-    <form (ngSubmit)="salvar()">
-      <div class="mb-3">
-        <label class="form-label">Descrição</label>
-        <input [(ngModel)]="horario.descricao" name="descricao" class="form-control" required />
+<div class="horario-form-container">
+  <div class="horario-form-card">
+    <div class="form-header">
+      <img src="assets/images/logo (1).png" alt="Logo BeeBee" class="logo-img">
+      <h2>{{ isEditMode ? 'Editar Disciplina' : 'Nova Disciplina' }}</h2>
+    </div>
+
+    <form (ngSubmit)="salvar()" #form="ngForm" novalidate>
+      <div class="form-group">
+        <input id="descricao" name="descricao" type="text" [(ngModel)]="horario.descricao" class="form-control" required placeholder="Ex: Cálculo I" #descricao="ngModel"/>
+        <div class="text-danger" *ngIf="descricao.invalid && descricao.touched">
+          Descrição é obrigatória *
+        </div>
       </div>
 
-      <div class="mb-3">
-        <label class="form-label">Dia da Semana</label>
-        <select [(ngModel)]="horario.dia" name="dia" class="form-select" required>
+      <div class="form-group">
+        <select id="dia" name="dia" [(ngModel)]="horario.dia" class="form-select" required #dia="ngModel">
+          <option value="" disabled selected>Selecione o dia</option>
           <option value="SEGUNDA">Segunda-feira</option>
           <option value="TERCA">Terça-feira</option>
           <option value="QUARTA">Quarta-feira</option>
@@ -19,20 +23,28 @@
           <option value="SEXTA">Sexta-feira</option>
           <option value="SABADO">Sábado</option>
         </select>
+        <div class="error-msg" *ngIf="dia.invalid && dia.touched">
+          Selecione o dia da semana.
+        </div>
       </div>
 
-      <div class="mb-3">
-        <label class="form-label">Horário</label>
-        <input [(ngModel)]="horario.horario" name="horario" type="time" class="form-control" required />
+      <div class="form-group">
+        <input id="horario" name="horario" type="time" [(ngModel)]="horario.horario" class="form-control" required #horarioModel="ngModel"/>
+        <div class="text-danger" *ngIf="horarioModel.invalid && horarioModel.touched">
+          Informe o horário *
+        </div>
       </div>
 
-      <div class="mb-3">
-        <label class="form-label">Situação</label>
-        <input [(ngModel)]="horario.situacao" name="situacao" class="form-control" />
+      <div class="form-group">
+        <input id="situacao" name="situacao" type="text" [(ngModel)]="horario.situacao" class="form-control" placeholder="Ex: Ativa, Trancada, Cancelada"/>
       </div>
 
-      <button type="submit" class="btn btn-primary">{{ isEditMode ? 'Atualizar' : 'Salvar' }}</button>
-      <a routerLink="/app/horarios" class="btn btn-secondary ms-2">Cancelar</a>
+      <div class="form-actions">
+        <button type="submit" class="btn btn-primary" [disabled]="form.invalid">
+          {{ isEditMode ? 'Atualizar' : 'Salvar' }}
+        </button>
+        <a routerLink="/app/horarios" class="btn btn-cancelar">Cancelar</a>
+      </div>
     </form>
   </div>
 </div>

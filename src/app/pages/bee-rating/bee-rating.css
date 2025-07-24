@@ -1,14 +1,17 @@
 .bees-container {
-  display: inline-block;
-  font-size: 1.2rem;
-  color: #ffc107;
+  display: flex;
+  gap: 2px;
 }
 
-.bee {
-  color: #e0e0e0;
-  margin-right: 2px;
+.bee-icon {
+  width: 20px;
+  height: 20px;
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-image: url('/assets/icons/Crown.png');
 }
 
-.bee.filled {
-  color: #ffc107;
+.bee-icon.filled {
+  background-image: url('/assets/icons/big-star-fill.png');
 }

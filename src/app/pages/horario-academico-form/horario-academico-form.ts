@@ -9,6 +9,7 @@ import { HorarioAcademico } from '../../models/horario-academico';
   selector: 'app-horario-academico-form',
   standalone: true,
   imports: [CommonModule, FormsModule, RouterLink],
+  styleUrls: ['./horario-academico-form.css'],
   templateUrl: './horario-academico-form.html'
 })
 export class HorarioAcademicoForm implements OnInit {
@@ -21,6 +22,7 @@ export class HorarioAcademicoForm implements OnInit {
   };
 
   isEditMode = false;
+  isSaving = false;
 
   constructor(
     private route: ActivatedRoute,
@@ -40,15 +42,30 @@ export class HorarioAcademicoForm implements OnInit {
   }
 
   salvar(): void {
+    if (this.isSaving) return;
+    this.isSaving = true;
+
     if (this.isEditMode && this.horario.id) {
-      this.horarioService.atualizar(this.horario.id, this.horario).subscribe(() => {
-        alert('Horário atualizado!');
-        this.router.navigate(['/app/horarios']);
+      this.horarioService.atualizar(this.horario.id, this.horario).subscribe({
+        next: () => {
+          alert('Horário atualizado!');
+          this.router.navigate(['/app/horarios']);
+        },
+        error: () => {
+          alert('Erro ao atualizar horário. Tente novamente.');
+          this.isSaving = false;
+        }
       });
     } else {
-      this.horarioService.salvar(this.horario).subscribe(() => {
-        alert('Horário salvo!');
-        this.router.navigate(['/app/horarios']);
+      this.horarioService.salvar(this.horario).subscribe({
+        next: () => {
+          alert('Horário salvo!');
+          this.router.navigate(['/app/horarios']);
+        },
+        error: () => {
+          alert('Erro ao salvar horário. Tente novamente.');
+          this.isSaving = false;
+        }
       });
     }
   }
