@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule, DatePipe } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { RouterLink, ActivatedRoute } from '@angular/router'; // Importa ActivatedRoute
+import { RouterLink, ActivatedRoute } from '@angular/router';
 import { Viagem } from '../../models/viagem';
 import { ViagemService } from '../../services/viagem';
 import { VeiculoService } from '../../services/veiculo';
@@ -11,6 +11,7 @@ import { VeiculoService } from '../../services/veiculo';
   standalone: true,
   imports: [ CommonModule, RouterLink, DatePipe, FormsModule ],
   templateUrl: './viagem-list.html',
+  styleUrls: ['./viagem-list.css']
 })
 export class ViagemList implements OnInit {
   viagens: Viagem[] = [];

@@ -2,11 +2,11 @@
   <div class="card viagem-card">
     <div class="card-body">
       <div class="form-header">
-        <img src="assets/images/B.svg" alt="Logo BeeBee" class="logo-img">
+        <img src="assets/images/logo (1).png" alt="Logo BeeBee" class="logo-img">
         <h2>{{ pageTitle }}</h2>
       </div>
 
-      <form (ngSubmit)="salvarViagem()">
+      <form (ngSubmit)="salvarViagem()" #viagemForm="ngForm">
         <div class="row">
           <div class="col-md-6 mb-3">
             <label for="origem" class="form-label">Origem</label>
@@ -24,8 +24,13 @@
             <input type="datetime-local" class="form-control" id="dataInicio" name="dataInicio" [(ngModel)]="viagem.dataInicio" required>
           </div>
           <div class="col-md-6 mb-3">
-            <label for="dataFim" class="form-label">Data e Hora de Fim (Opcional)</label>
-            <input type="datetime-local" class="form-control" id="dataFim" name="dataFim" [(ngModel)]="viagem.dataFim">
+            <label for="veiculo" class="form-label">Veículo</label>
+            <select id="veiculo" name="veiculo" [(ngModel)]="viagem.veiculoId" class="form-select form-control" required>
+              <option [ngValue]="undefined" disabled>Selecione um veículo</option>
+              @for (veiculo of veiculos; track veiculo.id) {
+                <option [value]="veiculo.id">{{ veiculo.modelo }} - {{ veiculo.placa }}</option>
+              }
+            </select>
           </div>
         </div>
 
@@ -34,8 +39,8 @@
           <textarea class="form-control" id="descricao" name="descricao" rows="3" [(ngModel)]="viagem.descricao" placeholder="Detalhes adicionais da viagem..."></textarea>
         </div>
 
-        <div class="d-grid gap-2">
-          <button type="submit" class="btn btn-primary">Salvar Viagem</button>
+        <div class="form-actions">
+          <button type="submit" class="btn btn-primary" [disabled]="viagemForm.invalid">Publicar</button>
           <a routerLink="/app/minhas-viagens" class="btn btn-secondary">Cancelar</a>
         </div>
       </form>

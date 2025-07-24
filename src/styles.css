@@ -4,4 +4,12 @@ body {
   font-family: 'Poppins', 'Helvetica Neue', sans-serif;
 
   background-color: #f1fafb;
+  font-size: 14px;
+}
+
+.alert-info {
+  color: #000000;
+  background-color: rgba(254, 190, 1, 0.4);
+  border-color:rgba(254, 190, 1, 0.4);
+  text-align: center;
 }

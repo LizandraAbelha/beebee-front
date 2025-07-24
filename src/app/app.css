@@ -1,0 +1,6 @@
+.page-container a.btn-primary,
+.page-container a.btn-secondary,
+.page-container button.btn {
+  cursor: pointer;
+  pointer-events: auto;
+}
