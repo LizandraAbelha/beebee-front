@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { BehaviorSubject, Observable, tap } from 'rxjs';
 import { Veiculo } from '../models/veiculo';
 
 @Injectable({
@@ -9,7 +9,22 @@ import { Veiculo } from '../models/veiculo';
 export class VeiculoService {
   private apiUrl = 'http://localhost:8080/veiculos';
 
+  private _possuiVeiculos = new BehaviorSubject<boolean>(false);
+  public readonly possuiVeiculos$ = this._possuiVeiculos.asObservable();
+
   constructor(private http: HttpClient) { }
+
+  verificarVeiculos(motoristaId: number): Observable<Veiculo[]> {
+    return this.http.get<Veiculo[]>(`${this.apiUrl}/motorista/${motoristaId}`).pipe(
+      tap(veiculos => {
+        this._possuiVeiculos.next(veiculos.length > 0);
+      })
+    );
+  }
+
+  notificarVeiculoAdicionado() {
+    this._possuiVeiculos.next(true);
+  }
 
   getVeiculosPorMotorista(motoristaId: number): Observable<Veiculo[]> {
     return this.http.get<Veiculo[]>(`${this.apiUrl}/motorista/${motoristaId}`);

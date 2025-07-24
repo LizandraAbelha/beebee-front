@@ -42,11 +42,35 @@ export class ViagemService {
     return this.http.get<Viagem[]>(`${this.apiUrl}/historico/motorista/${motoristaId}`);
   }
 
-  update(id: number, viagem: Viagem): Observable<Viagem> {
+  update(id: number, viagem: ViagemDTO): Observable<Viagem> {
     return this.http.put<Viagem>(`${this.apiUrl}/${id}`, viagem);
   }
 
   delete(id: number): Observable<void> {
     return this.http.delete<void>(`${this.apiUrl}/${id}`);
   }
+
+  iniciar(id: number): Observable<Viagem> {
+    return this.http.post<Viagem>(`${this.apiUrl}/${id}/iniciar`, {});
+  }
+
+  encerrar(id: number): Observable<Viagem> {
+    return this.http.post<Viagem>(`${this.apiUrl}/${id}/encerrar`, {});
+  }
+
+  cancelar(id: number): Observable<Viagem> {
+    return this.http.post<Viagem>(`${this.apiUrl}/${id}/cancelar`, {});
+  }
+}
+
+export interface ViagemDTO {
+    id?: number;
+    descricao?: string;
+    dataInicio?: string;
+    dataFim?: string;
+    origem?: string;
+    destino?: string;
+    situacao?: string;
+    motoristaId?: number;
+    veiculoId?: number;
 }

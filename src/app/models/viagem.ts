@@ -11,7 +11,9 @@ export interface Viagem {
   motoristaId: number;
   motoristaNome?: string;
   mediaMotorista?: number;
+  veiculoId?: number;
 
-  placa?: Veiculo;
-  modelo?: Veiculo;
+  veiculoModelo?: string;
+  veiculoPlaca?: string;
+  veiculoCor?: string;
 }

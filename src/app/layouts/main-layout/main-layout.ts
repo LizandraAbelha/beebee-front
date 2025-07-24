@@ -25,8 +25,10 @@ export class MainLayout implements OnInit, OnDestroy, AfterViewInit {
   unreadCount: number = 0;
   private notificacaoSubscription!: Subscription;
   private sidebarSubscription!: Subscription;
+  private veiculoSubscription!: Subscription;
   isSidebarOpen = false;
   hasVehicles: boolean = false;
+  isNotificationsOpen = false;
 
   public environment = environment;
 
@@ -45,6 +47,10 @@ export class MainLayout implements OnInit, OnDestroy, AfterViewInit {
       this.isSidebarOpen = !this.isSidebarOpen;
     });
 
+    this.veiculoSubscription = this.veiculoService.possuiVeiculos$.subscribe(possui => {
+      this.hasVehicles = possui;
+    });
+
     const id = localStorage.getItem('aluno_id');
     if (id) {
       const alunoId = Number(id);
@@ -55,7 +61,7 @@ export class MainLayout implements OnInit, OnDestroy, AfterViewInit {
       this.notificacaoSubscription = interval(30000).subscribe(() => {
         this.carregarNotificacoes(alunoId);
       });
-      this.checkUserVehicles(alunoId);
+      this.veiculoService.verificarVeiculos(alunoId).subscribe();
     }
   }
 
@@ -69,6 +75,9 @@ export class MainLayout implements OnInit, OnDestroy, AfterViewInit {
     }
     if (this.sidebarSubscription) {
       this.sidebarSubscription.unsubscribe();
+    }
+    if (this.veiculoSubscription) {
+      this.veiculoSubscription.unsubscribe();
     }
     if (this.map) {
       this.map.remove();
@@ -84,6 +93,9 @@ export class MainLayout implements OnInit, OnDestroy, AfterViewInit {
 
   toggleSidebar(): void {
     this.isSidebarOpen = !this.isSidebarOpen;
+  }
+  toggleNotifications(): void {
+    this.isNotificationsOpen = !this.isNotificationsOpen;
   }
 
   getIniciais(): string {
@@ -139,6 +151,31 @@ export class MainLayout implements OnInit, OnDestroy, AfterViewInit {
 
     this.map.on('load', () => console.log('Mapa carregado com sucesso!'));
     this.map.on('error', (e) => console.error('Erro no mapa:', e.error));
+  }
+
+  marcarComoLida(notificacao: Notificacao): void {
+    const handleNavigation = () => {
+      if (notificacao.link) {
+        this.router.navigate([notificacao.link]);
+        this.closeSidebar();
+      }
+    };
+
+    if (!notificacao.lida) {
+      this.notificacaoService.marcarComoLida(notificacao.id).subscribe(() => {
+        handleNavigation();
+
+        setTimeout(() => {
+          this.notificacoes = this.notificacoes.filter(n => n.id !== notificacao.id);
+          this.unreadCount = this.notificacoes.filter(n => !n.lida).length;
+        }, 500);
+      });
+    } else {
+      handleNavigation();
+      setTimeout(() => {
+        this.notificacoes = this.notificacoes.filter(n => n.id !== notificacao.id);
+      }, 500);
+    }
   }
 
   logout() {
