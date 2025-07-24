@@ -3,12 +3,13 @@ import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { Aluno } from '../models/aluno';
 import { AlterarSenhaDTO } from '../models/alterar-senha';
+import { environment } from '../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AlunoService {
-  private apiUrl = 'http://localhost:8080/alunos';
+  private apiUrl = `${environment.backendUrl}/alunos`;
 
   constructor(private http: HttpClient) { }
 
@@ -16,7 +17,7 @@ export class AlunoService {
     return this.http.post(this.apiUrl, aluno);
   }
   login(credenciais: any): Observable<any> {
-    return this.http.post('http://localhost:8080/alunos/autenticar', credenciais);
+    return this.http.post(`${environment.backendUrl}/alunos/autenticar`, credenciais);
   }
 
   getAll(): Observable<Aluno[]> {

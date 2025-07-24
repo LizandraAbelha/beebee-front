@@ -2,12 +2,13 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable, tap } from 'rxjs';
 import { Veiculo } from '../models/veiculo';
+import { environment } from '../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class VeiculoService {
-  private apiUrl = 'http://localhost:8080/veiculos';
+  private apiUrl = `${environment.backendUrl}/veiculos`;
 
   private _possuiVeiculos = new BehaviorSubject<boolean>(false);
   public readonly possuiVeiculos$ = this._possuiVeiculos.asObservable();

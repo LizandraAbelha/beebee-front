@@ -2,12 +2,13 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { Viagem } from '../models/viagem';
+import { environment } from '../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ViagemService {
-  private apiUrl = 'http://localhost:8080/viagens';
+  private apiUrl = `${environment.backendUrl}/viagens`;
 
   constructor(private http: HttpClient) { }
 
