@@ -4,6 +4,8 @@
 
 ## Sobre o Projeto
 
+**[Veja a Jornada do Usuário aqui](./BeeBee_Jornada_do_Usuario_FINAL.md)**  
+
 O sistema de caronas foi idealizado para **conectar estudantes do CEFET-MG Campus Timóteo** de maneira prática e segura, facilitando a organização de caronas entre alunos que compartilham trajetos similares. O app promove o uso consciente dos veículos, diminui custos e otimiza o tempo dos usuários.
 
 Essa solução é pensada para a comunidade acadêmica, oferecendo:
